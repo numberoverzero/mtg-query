@@ -1,0 +1,221 @@
+#How do I make pretty format?
+
+This page describes some of the commonly-used markdown features available on mtg-query.  Note that image links are disabled.
+
+For site-specific formatting, such as including mana symbols {u} see **[help:symbols](/help/symbols "magic symbols help")**.  
+For help using the different site tools, including card formatting, see **[help:site](/help/site "site help")**.
+
+---
+
+##Code
+
+####Inline
+
+You can use single backticks like this: `` `<script>alert("XSS!");</script>` `` to escape small bits of code in-line.
+
+####Four spaces
+```
+    <blink>Four spaces before each line</blink>
+    (God blink's awful)
+
+    Linking doesn't work [the gewgle](google.com)
+```
+
+####Backticks (fenced code blocks)
+
+Or use 3 (or more) backticks before and after the code
+Like this:
+
+``````
+```
+<blink>Backticks before and after code</blink>
+(God blink's awful)
+
+Linking doesn't work [the gewgle](google.com)
+```
+``````
+
+##Emphasis
+
+####Bold (strong)
+
+`**someone please ban bob.**` produces **someone please ban bob.**
+
+`__someone please ban bob.__` produces __someone please ban bob.__
+
+####Italic (em)
+
+`*not sure if...*` produces *not sure if...*
+
+`_not sure if..._` produces _not sure if..._
+
+####Inner-word underscores
+
+Using underscores inside of a word is fine:
+
+`_not_sure_if_srs_` produces _not_sure_if_srs_
+
+####Bold and Italic
+
+`***What?!***` produces ***What?!***
+
+`*__What?!__*` produces *__What?!__*
+
+##Escaping
+
+You can escape most markdown characters by putting a slash "\" in front of them.  This is particularly useful for emphasis:
+
+`*Say what again, motherf**cker.*` produces *Say what again, motherf**cker.*
+
+with escaping:
+
+`*Say what again, motherf\*\*cker.*` produces *Say what again, motherf\*\*cker.*
+
+##Headers
+```
+#Level 1
+##Level 2
+###Level 3
+####Level 4
+#####Level 5
+######Level 6
+```
+
+##Links
+
+####Basic
+
+`[the gewgle](google.com)` produces [the gewgle](google.com)
+
+####Titles
+`[the gewgle](google.com "Optional title for the Googs")` produces [the gewgle](google.com "Optional title for the Googs")
+
+####References
+```
+[the gewgle][1]
+
+Your references don't need to go directly after the link, they can be anywhere...
+
+[1]: google.com "Optional title for the Googs"
+```
+[the gewgle][1]
+
+Your references don't need to go directly after the link, they can be anywhere...
+
+[1]: google.com "Optional title for the Googs"
+
+####Image links
+
+Not supported.
+
+##Lists
+
+####Ordered
+```
+1. One small catch:
+4. the numbers you use
+2. don't matter
+200. it always starts at one
+```
+1. One small catch:
+4. the numbers you use
+2. don't matter
+200. it always starts at one
+
+Watch out! The following will trigger an ordered list:
+
+    1296.  Very good year! Almost as old as I am! It was laid down by my father. What say we open one?
+1296.  Very good year! Almost as old as I am! It was laid down by my father. What say we open one?
+
+To avoid this, escape with a "\":
+
+    1296\.  Very good year! Almost as old as I am! It was laid down by my father. What say we open one?
+1296\.  Very good year! Almost as old as I am! It was laid down by my father. What say we open one?
+
+####Unordered
+```
+* You can use *
+* or +
+* or -
+* just be consistent!
+```
+* You can use *
+* or +
+* or -
+* just be consistent!
+
+####Nesting
+
+Put four spaces before each level of indentation:
+```
+* Level 1
+    * This is indented
+    * So is this
+        * Even more!
+* Level 2
+```
+* Level 1
+    * This is indented
+    * So is this
+        * Even more!
+* Level 2
+
+##Paragraphs
+
+####One line return
+```
+This is still
+just one line.
+```
+This is still
+just one line.
+
+####Two line returns
+```
+Paragraph one
+
+Paragraph two
+```
+Paragraph one
+
+Paragraph two
+
+####Forcing a line return
+```
+Adding two spaces to the end of this line  
+Inserts a literal line return
+```
+Adding two spaces to the end of this line  
+Inserts a literal line return
+
+##Quotes
+```
+> The enemy has been destroyed, sir.
+> 
+> So have the forest, the city, your palace, your dog . . .
+> 
+> --Keldon soldier
+```
+> The enemy has been destroyed, sir.
+> 
+> So have the forest, the city, your palace, your dog . . .
+> 
+> --Keldon soldier
+
+([Obliterate](/cards/45396.jpg))
+
+##Tables
+
+```
+Card Name      | Mana Cost | CMC
+-------------  | --------- | ----
+Teleportal     | {u}{r}    | {2}
+Chaos Imps     | {4}{r}{r} | {6}
+Mental Misstep | {up}      | {1}
+```
+
+Card Name      | Mana Cost | CMC
+-------------  | --------- | ----
+Teleportal     | {u}{r}    | {2}
+Chaos Imps     | {4}{r}{r} | {6}
+Mental Misstep | {up}      | {1}

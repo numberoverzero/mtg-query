@@ -1,0 +1,94 @@
+#What the hell am I doing here?
+
+This page describes how to enter card info (name, quantity, set), as well as how to use each of the site tools such as Synergy and Trade.
+
+For site-specific formatting, such as including mana symbols {u} see **[help:symbols](/help/symbols "magic symbols help")**.  
+For general formatting, such as adding lists and headers to descriptions, see **[help:markdown](/help/markdown "formatting help")**.
+
+---
+
+##Entering cards{: #entering-cards}
+
+####Card Lists (Trade, Synergy)
+
+* Capitalization is not important.
+* By default, a card name alone means a quantity of one, in the most recent printing.
+* You do not need to use special characters.  `aether flash` will properly resolve to [[aether flash]].
+* Exact set names take priority over newer set names that are a partial match. *(see Special Set Notes)*
+
+    Input                     | Output
+    ------------------------- | -----------------------------------------------------------------------------------------------
+    `Mizzium Mortars`         | 1 copy of [[Mizzium Mortars]] from Return to Ravnica (most recent)
+    `3 Kird Ape`              | 3 copies of [[kird ape]] from From the Vault: Exiled (most recent)
+    `2 Kird Ape : Revised`    | 2 copies of [[kird ape:rev]] from Revised
+    `Ornithopter : Mirr`      | 1 copy of [[Ornithopter:mirr]] from Mirrodin (partial set name match)
+    `4 Time Walk : Darksteel` | 4 copies of [[time walk]] from Unlimited (wasn't printed in Darksteel, defaults to most recent)
+
+#####Special Set Notes
+
+Copper Myr is interesting.  Printed in [[copper myr:Mirrodin"Mirrodin"]], then [[copper myr:Planechase"Planechase"]], and then [[copper myr:Scars of Mirrodin"Scars of Mirrodin"]],  any part of the word "Mirrodin" such as `Copper Myr : Mirr` will give us the **most recent set that partially matches** (which is Scars of Mirrodin).  The only way to specify the Mirrodin printing is to provide the exact set name: `4 Copper Myr : mirrodin`.  
+
+
+####Markup - Popups in Descriptions
+
+Similar to the above formatting, with these changes:
+
+1. Surround card names in double brackets.  `[[Island]]` becomes [[Island]].
+2. You can specify alternate text using quotes.  The infamous [[dark confidant "Bob"]] can be rendered using `[[dark confidant "Bob"]]`.
+3. Set and alternate text are both optional.  These are all valid:
+    
+    Input | Output
+    ----- | -----
+    `[[Black Lotus"Unlimited isn't too expensive"]]` | [[Black Lotus"Unlimited isn't too expensive"]]
+    `[[Black Lotus:Beta"But Beta is"]]` | [[Black Lotus:Beta"But Beta is"]]
+
+##Synergy{: #synergy}
+
+####Why the hell would I use this?
+
+Synergy is an easy way to link to a few cards that work well together.  Of course, you can still use Synergy for [combos](/synergy/Xi2PK) :)
+
+Here's a [slightly longer synergy](/synergy/WyXa4).
+
+For example, [[Doubling Season]] and [[Tamiyo, the Moon Sage]] allow you to use Tamiyo's ultimate as soon as she enters the battlefield.  Use [Synergy](/synergy) instead of saving the images for both of those cards, editing them together and then uploading to a cool image hosting site like [imgur](http://www.imgur.com).
+
+1. Enter a title for our synergy (optional)
+2. Give a brief description of what's going on (optional)
+3. Enter one card per line
+4. [Synergize!](/synergy/JYhaz)
+
+But Doubling Season works well for any planeswalker.  Instead of using a specific planeswalker, we can also insert [arbitrary text](/synergy/onYy4)!
+
+####Card Text Formatting
+
+Very similar to above, just put a `#` in front of your text.
+
+* `#Any Planeswalker` for one copy of "Any Planeswalker"
+* `2 #Any elf` for 2 copies of ["Any elf"](/synergy/asEAk)
+
+
+
+##Trade{: #trade}
+
+####Why the hell would I use this?
+
+* When you're trading at your LGS and don't want to check prices one at a time on your phone.
+* Prices are loaded server-side so you're not downloading a full cardkingdom page for every card you look up.
+* Give your trading buddy your trade hash and they can see the same price breakdown and sorting options, and adjust piles faster.
+* Want an easy way to track your pack to power journey?  Enter each trade and you save the trade hash.  Easier than little bits of paper!
+    * *Please note that the trade tool is not **strictly** better than little bits of paper - site cannot be used as confetti*
+
+Trades are saved with the price source used to compare them, but the prices displayed are current (or recently cached, if the trade was submitted that way).  In the future, it may be possible to save historical prices as well so you can see how the trade's value has shifted over time.
+
+####Cached Prices
+
+To try and avoid hammering the sites we pull prices from, we cache price information per card per site.
+
+Cached prices are kept for around 30 minutes, so unless a new set just came out and prices are spiking every which way, you'll probably be fine with cached values.  Also, unless this site explodes in popularity for its trading tool (which is unlikely, given the number of magic related websites out there already) the cache will likely always be over 30 minutes old, so you should be getting new prices anyway.
+
+In the case that there is a sudden influx of people requesting forced lookups at once (say, FNM after Gatecrash comes out) the server may introduce a delay of around 5 seconds so that the various pricing sites don't start blacklisting our requests.  *(Right now the only implemented pricing site is TCGPlayer, and total traffic incoming is low so it shouldn't be a concern)*
+
+####Prices Sources
+
+Different sources offer different types of pricing information.  Some sites provide low, average, and high prices (such as TCGPlayer.com)  From those sites, we use average.  Not all sites provide breakdowns by set.
+

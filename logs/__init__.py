@@ -1,0 +1,1 @@
+##mtgquery.logs.__init__

@@ -1,0 +1,60 @@
+#How do I mana symbol?
+
+This page describes site-specific formatting, such as including mana symbols {u}.
+
+For general formatting, such as adding lists and headers to descriptions, see **[help:markdown](/help/markdown "formatting help")**.  
+For help using the different site tools, including card formatting, see **[help:site](/help/site "site help")**.
+
+---
+
+##General
+
+* Capitalization is not important.
+* Split symbols can be entered in either order; `{bg}` and `{gb}` both produce {bg}
+* You can change the size by appending `:size` to any symbol. (default value is `small`)
+* Not every symbol is available in every size.  Currently, Phyrexian {wp:medium} symbols are not available in large.
+
+Input                 | Output
+--------------------- | --------
+`{t}`                 | {t}
+`{t:s}`, `{t:small}`  | {t:small}
+`{t:m}`, `{t:medium}` | {t:medium}
+`{t:l}`, `{t:large}`  | {t:large}
+
+Note that sizes will not automatically match the line-height of the text around them.  So `{t}` in a header will still be a small symbol, even though a medium or large might be a better fit.
+
+##Colorless
+
+{0} through {16} as well as {x} and [{1000000}](/cards/73947.jpg "Gleemax").  `{7}` becomes {7}.
+
+##Single colors
+
+* For phyrexian symbols, add `p` after the color.  `{wp}` becomes {wp:medium}
+* For double split symbols, add `2` before the color.  `{2g}` becomes {2g:medium}
+
+Color | Raw | Base  | Phyrexian | Double split
+----- | --- | ----- | --------- | ------------
+White | `{w}` | {w:medium} | {wp:medium}      | {2w:medium}
+Blue  | `{u}` | {u:medium} | {up:medium}      | {2u:medium}
+Black | `{b}` | {b:medium} | {bp:medium}      | {2b:medium}
+Red   | `{r}` | {r:medium} | {rp:medium}      | {2r:medium}
+Green | `{g}` | {g:medium} | {gp:medium}      | {2g:medium}
+
+##Split colors
+
+All 10 two-color split costs are supported;  order is not important.
+
+Colors      | Raw    | Output      | Colors      | Raw    | Output
+----------- | ------ | ----------- | ----------- | ------ | -----------
+White Blue  | `{wu}` | {wu:medium} | Black Green | `{bg}` | {bg:medium}
+White Black | `{wb}` | {wb:medium} | Red White   | `{rw}` | {rw:medium}
+Blue Black  | `{ub}` | {ub:medium} | Red Green   | `{rg}` | {rg:medium}
+Blue Red    | `{ur}` | {ur:medium} | Green White | `{gw}` | {gw:medium}
+Black Red   | `{br}` | {br:medium} | Green Blue  | `{gu}` | {gu:medium}
+
+##Tapping
+
+`{t}` or `{tap}` produces {t:medium}
+
+`{ut}` or `{untap}` produces {ut:medium}
+
