@@ -11,6 +11,7 @@ ${parent.body()}
 </div>
 </%def>
 
+
 <%def name="js_onready()">
 ${parent.js_onready()}
 ${common_js.card_tooltips() |n}
