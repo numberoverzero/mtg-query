@@ -6,11 +6,8 @@
 
 <%def name="body()">
 ${parent.body()}
-<div class="row-fluid">
-  <div class="well well-small span6 offset3">
-    ${contents |n}
-  </div>
-  <div class="span3" />
+<div class="well well-small container">
+  ${contents |n}
 </div>
 </%def>
 

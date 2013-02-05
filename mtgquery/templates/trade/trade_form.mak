@@ -8,7 +8,7 @@
 <%namespace name="base" file="../components/base.mak"/>
 <%def name="form(title, name='', stack_1_text='', stack_2_text='')">
 <% name = ifelse(name is None, '', name) %>
-<form class="well" action="#" method="POST">
+<form id="trade-form" class="well form-center" action="#" method="POST">
   <fieldset>
     <legend>
       ${title}

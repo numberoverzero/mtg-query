@@ -6,7 +6,7 @@
 %>
 <%namespace name="base" file="../components/base.mak"/>
 <%def name="form(title, name='', description='', cards_text='')">
-<form id="synergy-form" class="well" action="#" method="POST">
+<form id="synergy-form" class="well form-center" action="#" method="POST">
   <fieldset>
     <legend>
       ${title}

@@ -3,12 +3,7 @@
 
 <%def name="body()">
 ${parent.body()}
-<div class="row-fluid">
-  <div class="span4 offset4">
-    ${form.form("Price Comparison")}
-  </div>
-  <div class="span4"/>
-</div>
+${form.form("Price Comparison")}
 </%def>
 
 <%def name="css()">

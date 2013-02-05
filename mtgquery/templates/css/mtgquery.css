@@ -35,3 +35,5 @@ div.captioned-image dd.top-caption { top: 1.25em; font: bold 2.125em/1.25em Helv
 div.captioned-image dd p { display: block; float: left; clear: both;
     background: #000; background: rgba(0, 0, 0, 0.8);
     padding: 0.25em 0.5em; color: #fff; margin: 0; }
+
+.form-center { margin: auto; max-width: 400px; }

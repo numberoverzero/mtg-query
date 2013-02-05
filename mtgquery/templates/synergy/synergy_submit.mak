@@ -5,16 +5,11 @@
 
 <%def name="body()">
 ${parent.body()}
-<div class="row-fluid">
-  <div class="span4 offset4">
-    % if base.isdef('form_name'):
-    ${form.form("Synergy", name=form_name, description=form_description, cards_text=form_cards_text)}
-    % else:
-    ${form.form("Synergy")}
-    % endif
-  </div>
-  <div class="span4"/>
-</div>
+% if base.isdef('form_name'):
+${form.form("Synergy", name=form_name, description=form_description, cards_text=form_cards_text)}
+% else:
+${form.form("Synergy")}
+% endif
 </%def>
 
 <%def name="css()">
