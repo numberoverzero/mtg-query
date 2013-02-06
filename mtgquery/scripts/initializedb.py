@@ -30,6 +30,10 @@ def loadDBSession(argv):
     config_uri = argv[1]
     setup_logging(config_uri)
     settings = get_appsettings(config_uri)
+
+    sqlalchemy_url = os.environ.get('DATABASE_URL')
+    settings['sqlalchemy.url'] = sqlalchemy_url
+
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.create_all(engine)
