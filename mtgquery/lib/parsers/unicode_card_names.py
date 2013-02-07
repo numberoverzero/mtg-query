@@ -30,4 +30,5 @@ Azorius Æthermage
 Fold into Æther
 Frozen Æther
 Gate to the Æther
+Séance
 """

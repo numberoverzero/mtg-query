@@ -8,11 +8,20 @@ for card_name in special_cards.split('\n'):
     special_cards_exact.append(card_name)
 
 valid_spellings = {}
-valid_replacements = [u'ae', u'æ']
+ci_valid_spellings = {}
+replacements = [
+    (u'æ', u'ae'),
+    (u'Æ', u'ae'),
+    (u'é', u'e'),
+]
+
 for exact in special_cards_exact:
-    for replacement in valid_replacements:
-        valid = exact.replace(u'Æ', replacement)
+    for replacement in replacements:
+        valid = exact.replace(*replacement)
+        if valid == exact:  # No replacement
+            continue
         valid_spellings[valid] = exact
+        ci_valid_spellings[valid.lower()] = exact
 
 
 def ci_contains(string):
