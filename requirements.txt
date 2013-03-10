@@ -10,7 +10,6 @@ grequests==0.1.0
 mako==0.7.3
 markdown==2.2.1
 markupsafe==0.15
-newrelic
 nose==1.2.1
 pastedeploy==1.5.0
 pastescript
