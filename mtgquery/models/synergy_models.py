@@ -2,7 +2,7 @@ import transaction
 from ..models import (
     Base,
     DBSession
-    )
+)
 
 from sqlalchemy import (
     Boolean,
@@ -11,7 +11,7 @@ from sqlalchemy import (
     Text,
     DateTime,
     ForeignKey
-    )
+)
 
 from sqlalchemy.orm import relationship
 

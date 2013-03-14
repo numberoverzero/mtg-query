@@ -1,1 +1,1 @@
-../Scripts/python runapp.py
+../Scripts/pserve development.ini --reload

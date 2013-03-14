@@ -2,9 +2,9 @@ import traceback
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config, forbidden_view_config, notfound_view_config
 
-from mtgquery.lib import exceptions
 from mtgquery.lib import help as Help
 from mtgquery.lib import notifications as Notifications
+from mtgquery.lib.synergy import SynergyHashNotFoundException
 from mtgquery.lib.synergy.submit_synergy import submit_new_synergy
 from mtgquery.lib.synergy.load_synergy import load_existing_synergy
 from mtgquery.lib.util import merge_dicts, INFO, ERROR
@@ -52,7 +52,7 @@ def catch_all(exception, request):
     return error_info.error('500')
 
 
-@view_config(context=exceptions.SynergyHashNotFoundException, renderer='basic_error.mak')
+@view_config(context=SynergyHashNotFoundException, renderer='basic_error.mak')
 def synergy_not_found(exception, request):
     request.response.status_int = 404
     response = error_info.error('404hash')

@@ -5,7 +5,7 @@ from ..parsers import (
     cardcount_generator,
     synergytext_generator,
     synergy_text_regex
-    )
+)
 from ...models import (
     DBSession,
 
@@ -13,7 +13,7 @@ from ...models import (
     Synergy,
     SynergyCard,
     SynergyText
-    )
+)
 
 
 def submit_new_synergy(cards, name, description):

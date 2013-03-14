@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 
-def add_class(text, element, *args):
+def add_class(text, element, *classes):
     '''
     Add any number of classes to a given element type.
     Input is raw text, output is non-formatted text.
@@ -12,6 +12,6 @@ def add_class(text, element, *args):
     for tag in tags:
         if 'class' not in tag:
             tag['class'] = []
-        tag['class'].extend(args)
+        tag['class'].extend(classes)
     string_soup = str(soup)
     return string_soup

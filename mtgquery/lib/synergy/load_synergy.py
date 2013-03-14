@@ -1,9 +1,9 @@
-from ..exceptions import SynergyHashNotFoundException
+from . import SynergyHashNotFoundException
 from ..parsers import card_group, synergy_group
 from ...models import (
     DBSession,
     Synergy,
-    )
+)
 
 
 def load_existing_synergy(hash_id):

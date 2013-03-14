@@ -1,6 +1,4 @@
 ##mtgquery.lib.util
-
-
 import os
 import errno
 import itertools
@@ -9,12 +7,6 @@ import random
 import time
 
 __log = logging.getLogger(__name__)
-
-
-def p(msg):
-    print '=' * 30
-    __log.debug(msg)
-    print '=' * 30
 
 
 def rel_path(file):

@@ -7,6 +7,30 @@ For general formatting, such as adding lists and headers to descriptions, see **
 
 ---
 
+##Synergy{: #synergy}
+
+####What is Synergy?
+
+Synergy is an easy way to link to a few cards that work well together.  Of course, you can still use Synergy for [combos](/synergy/Xi2PK) :)
+
+Here's a [slightly longer synergy](/synergy/WyXa4).
+
+For example, [[Doubling Season]] and [[Tamiyo, the Moon Sage]] allow you to use Tamiyo's ultimate as soon as she enters the battlefield.  Use [Synergy](/synergy) instead of saving the images for both of those cards, editing them together and then uploading to a cool image hosting site like [imgur](http://www.imgur.com).
+
+1. Enter a title for our synergy (optional)
+2. Give a brief description of what's going on (optional)
+3. Enter one card per line
+4. [Synergize!](/synergy/JYhaz)
+
+But Doubling Season works well for any planeswalker.  Instead of using a specific planeswalker, we can also insert [arbitrary text](/synergy/onYy4)!
+
+####Card Text Formatting
+
+Very similar to above, just put a `#` in front of your text.
+
+* `#Any Planeswalker` for one copy of "Any Planeswalker"
+* `2 #Any elf` for 2 copies of ["Any elf"](/synergy/asEAk)
+
 ##Entering cards{: #entering-cards}
 
 ####Card Lists
@@ -41,28 +65,3 @@ Similar to the above formatting, with these changes:
     ----- | -----
     `[[Black Lotus"Unlimited isn't too expensive"]]` | [[Black Lotus"Unlimited isn't too expensive"]]
     `[[Black Lotus:Beta"But Beta is"]]` | [[Black Lotus:Beta"But Beta is"]]
-
-##Synergy{: #synergy}
-
-####What is Synergy?
-
-Synergy is an easy way to link to a few cards that work well together.  Of course, you can still use Synergy for [combos](/synergy/Xi2PK) :)
-
-Here's a [slightly longer synergy](/synergy/WyXa4).
-
-For example, [[Doubling Season]] and [[Tamiyo, the Moon Sage]] allow you to use Tamiyo's ultimate as soon as she enters the battlefield.  Use [Synergy](/synergy) instead of saving the images for both of those cards, editing them together and then uploading to a cool image hosting site like [imgur](http://www.imgur.com).
-
-1. Enter a title for our synergy (optional)
-2. Give a brief description of what's going on (optional)
-3. Enter one card per line
-4. [Synergize!](/synergy/JYhaz)
-
-But Doubling Season works well for any planeswalker.  Instead of using a specific planeswalker, we can also insert [arbitrary text](/synergy/onYy4)!
-
-####Card Text Formatting
-
-Very similar to above, just put a `#` in front of your text.
-
-* `#Any Planeswalker` for one copy of "Any Planeswalker"
-* `2 #Any elf` for 2 copies of ["Any elf"](/synergy/asEAk)
-s

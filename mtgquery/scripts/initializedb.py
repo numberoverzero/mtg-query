@@ -1,6 +1,5 @@
 import os
 import sys
-import transaction
 
 import gen_help_links
 from sqlalchemy import engine_from_config
@@ -40,7 +39,4 @@ def main(argv=sys.argv):
     if len(argv) != 2:
         usage(argv)
     loadDBSession(argv)
-    # session = DBSession()
-    # Do stuff with session
-    transaction.commit()
     gen_help_links.main()
