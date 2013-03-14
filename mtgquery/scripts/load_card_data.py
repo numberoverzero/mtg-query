@@ -25,19 +25,14 @@ from mtgquery.models import (
     CardSet,
     CardType,
     CardWatermark
-    )
+)
 from mtgquery.models import get_or_create
 from mtgquery.scripts import gen_help_links
+import sqlsoup
 
-from mtgquery.lib.http import get_htmls
-from mtgquery.lib.util import make_sure_path_exists
-from mtgquery.lib import gatherer_icons
 
 dstSession = DBSession()
 load_model = lambda model, **kwargs: get_or_create(dstSession, model, **kwargs)
-
-import sqlsoup
-import itertools
 
 
 def load_cards_from(db_path):
@@ -64,7 +59,7 @@ def load_card(srcCard):
         number=number,
         power=power,
         toughness=toughness,
-        )
+    )
 
     card.artist = load_model(CardArtist, artist=srcCard.artist)
     card.cost = load_model(CardCost, cost=srcCard.cost)
@@ -81,36 +76,6 @@ def load_card(srcCard):
 
     dstSession.add(card)
 
-src_path = """http://gatherer.wizards.com/Handlers/Image.ashx?size={}&name={}&type=symbol"""
-root_dst_folder = """D:\\Workspace\\PythonWorkspace\\mtg_env\\mtgquery\\mtgquery\\mtg_images\\icons"""
-
-
-def save_icon(size, name, data):
-    loc = root_dst_folder + "\\" + size
-    make_sure_path_exists(loc)
-    filename = loc + "\\{}.jpg".format(name)
-    with open(filename, 'wb') as f:
-        f.write(data)
-
-
-def load_mtg_icons():
-    good_icons = []
-    urls = []
-    for icon in itertools.product(gatherer_icons.sizes, gatherer_icons.icons):
-        if icon in gatherer_icons.skip:
-            print "SKIPPING: {} {}".format(*icon)
-            continue
-        url = src_path.format(*icon)
-        urls.append(url)
-        good_icons.append(icon)
-    print "Loading data..."
-    datas = get_htmls(urls)
-    print "Loaded data!"
-    print "Saving data..."
-    for icon, data in zip(good_icons, datas):
-        save_icon(icon[0], icon[1], data)
-    print "Saved data!"
-
 if __name__ == "__main__":
     argv = sys.argv
     if len(argv) != 2:
@@ -119,4 +84,3 @@ if __name__ == "__main__":
     load_cards_from(db_path)
     gen_help_links.main()
     transaction.commit()
-    load_mtg_icons()

@@ -1,6 +1,20 @@
 from pyramid.settings import asbool
-from lib import skip_page
 from mtgquery.lib.util import DEBUG, simple_timer
+
+#Pages we don't want to do anything clever with
+skip_exts = [
+    'js',
+    'css',
+    'jpg',
+    'png'
+]
+
+
+def skip_page(url):
+    if url is None:
+        return True
+    return any('.'+ext in url for ext in skip_exts)
+
 
 def timing_tween_factory(handler, registry):
     if asbool(registry.settings.get('do_timing')):

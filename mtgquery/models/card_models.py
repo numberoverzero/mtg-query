@@ -1,13 +1,13 @@
 from ..models import (
     Base,
     DBSession
-    )
+)
 from sqlalchemy import (
     Column,
     Integer,
     Text,
     ForeignKey
-    )
+)
 
 from sqlalchemy.orm import relationship
 from mtgquery.lib.parsers import resolve_set, get_exact_name
@@ -34,7 +34,6 @@ class Card(Base):
     set_id = Column(Integer, ForeignKey('cardsets.id'))
     type_id = Column(Integer, ForeignKey('cardtypes.id'))
     watermark_id = Column(Integer, ForeignKey('cardwatermarks.id'))
-    cached_prices = relationship("CachedPrice", backref='card')
 
     @classmethod
     def interpolate_name_and_set(cls, name, set, notifications=None):

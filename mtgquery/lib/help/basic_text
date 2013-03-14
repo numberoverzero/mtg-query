@@ -1,6 +1,6 @@
 #What the hell am I doing here?
 
-This page describes how to enter card info (name, quantity, set), as well as how to use each of the site tools such as Synergy and Trade.
+This page describes how to enter card info (name, quantity, set), as well as advanced Synergy options.
 
 For site-specific formatting, such as including mana symbols {u} see **[help:symbols](/help/symbols "magic symbols help")**.  
 For general formatting, such as adding lists and headers to descriptions, see **[help:markdown](/help/markdown "formatting help")**.
@@ -9,7 +9,7 @@ For general formatting, such as adding lists and headers to descriptions, see **
 
 ##Entering cards{: #entering-cards}
 
-####Card Lists (Trade, Synergy)
+####Card Lists
 
 * Capitalization is not important.
 * By default, a card name alone means a quantity of one, in the most recent printing.
@@ -44,7 +44,7 @@ Similar to the above formatting, with these changes:
 
 ##Synergy{: #synergy}
 
-####Why the hell would I use this?
+####What is Synergy?
 
 Synergy is an easy way to link to a few cards that work well together.  Of course, you can still use Synergy for [combos](/synergy/Xi2PK) :)
 
@@ -65,30 +65,4 @@ Very similar to above, just put a `#` in front of your text.
 
 * `#Any Planeswalker` for one copy of "Any Planeswalker"
 * `2 #Any elf` for 2 copies of ["Any elf"](/synergy/asEAk)
-
-
-
-##Trade{: #trade}
-
-####Why the hell would I use this?
-
-* When you're trading at your LGS and don't want to check prices one at a time on your phone.
-* Prices are loaded server-side so you're not downloading a full cardkingdom page for every card you look up.
-* Give your trading buddy your trade hash and they can see the same price breakdown and sorting options, and adjust piles faster.
-* Want an easy way to track your pack to power journey?  Enter each trade and you save the trade hash.  Easier than little bits of paper!
-    * *Please note that the trade tool is not **strictly** better than little bits of paper - site cannot be used as confetti*
-
-Trades are saved with the price source used to compare them, but the prices displayed are current (or recently cached, if the trade was submitted that way).  In the future, it may be possible to save historical prices as well so you can see how the trade's value has shifted over time.
-
-####Cached Prices
-
-To try and avoid hammering the sites we pull prices from, we cache price information per card per site.
-
-Cached prices are kept for around 30 minutes, so unless a new set just came out and prices are spiking every which way, you'll probably be fine with cached values.  Also, unless this site explodes in popularity for its trading tool (which is unlikely, given the number of magic related websites out there already) the cache will likely always be over 30 minutes old, so you should be getting new prices anyway.
-
-In the case that there is a sudden influx of people requesting forced lookups at once (say, FNM after Gatecrash comes out) the server may introduce a delay of around 5 seconds so that the various pricing sites don't start blacklisting our requests.  *(Right now the only implemented pricing site is TCGPlayer, and total traffic incoming is low so it shouldn't be a concern)*
-
-####Prices Sources
-
-Different sources offer different types of pricing information.  Some sites provide low, average, and high prices (such as TCGPlayer.com)  From those sites, we use average.  Not all sites provide breakdowns by set.
-
+s

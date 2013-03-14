@@ -7,7 +7,7 @@ from sqlalchemy import engine_from_config
 from .models import (
     DBSession,
     Base,
-    )
+)
 
 
 def main(global_config, **settings):
@@ -46,21 +46,6 @@ def main(global_config, **settings):
     #
     #####################################
     add_auto_route('home', '/')
-
-    #####################################
-    #
-    #       Trade
-    #
-    #####################################
-
-    #Create trade
-    add_auto_route('trade', '/trade')
-
-    #Load raw saved trade (no copy functionality)
-    add_auto_route('trade_load_raw', 'trade/raw/{hash_id}')
-
-    #Load saved trade
-    add_auto_route('trade_load', 'trade/{hash_id}')
 
     #####################################
     #
