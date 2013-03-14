@@ -130,6 +130,3 @@ def main():
     session = DBSession()
     map(lambda s: load_synergy(session, *s), synergies)
     transaction.commit()
-
-if __name__ == "__main__":
-    main()
