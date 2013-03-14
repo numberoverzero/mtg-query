@@ -1,1 +1,0 @@
-..\Scripts\python runapp.py
