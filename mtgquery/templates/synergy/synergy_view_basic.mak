@@ -1,6 +1,6 @@
 <%inherit file="../components/bootstrap.mak"/>
 <%namespace name="base" file="../components/base.mak"/>
-<%namespace name="raw" file="synergy_raw.mak"/>
+<%namespace name="raw" file="synergy_view_data.mak"/>
 
 <div class="row-fluid">
   <div class="span10 offset1">

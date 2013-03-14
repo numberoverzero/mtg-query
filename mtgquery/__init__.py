@@ -49,24 +49,6 @@ def main(global_config, **settings):
 
     #####################################
     #
-    #       Synergy
-    #
-    #####################################
-
-    #Create synergy
-    add_auto_route('synergy', '/synergy')
-
-    #Copy from synergy
-    add_auto_route('synergy_copy_from', '/synergy/from/{hash_id}')
-
-    #Load raw saved synergy (no copy functionality)
-    add_auto_route('synergy_load_raw', 'synergy/raw/{hash_id}')
-
-    #Load saved synergy
-    add_auto_route('synergy_load', 'synergy/{hash_id}')
-
-    #####################################
-    #
     #       Help
     #
     #####################################
@@ -89,6 +71,24 @@ def main(global_config, **settings):
     add_auto_route('r403', '/403')
     add_auto_route('r404', '/404')
     add_auto_route('r500', '/500')
+
+    #####################################
+    #
+    #       Synergy
+    #
+    #####################################
+
+    #Submit
+    add_auto_route('synergy_submit', '/submit')
+
+    #Submit from copy
+    add_auto_route('synergy_submit_copy', '/submit/from/{hash_id}')
+
+    #View
+    add_auto_route('synergy_view', '/{hash_id}')
+
+    #View basic
+    add_auto_route('synergy_view_basic', '/{hash_id}/basic')
 
     config.scan()
     return config.make_wsgi_app()

@@ -66,27 +66,27 @@ def home(request):
     return {}
 
 
-@view_config(route_name='synergy', renderer='synergy/synergy_submit.mak')
-def synergy(request):
+@view_config(route_name='synergy_submit', renderer='synergy/synergy_submit_page.mak')
+def synergy_submit(request):
     if request.POST:
         return redirect_new_synergy(request)
     return {'navbar_index': 'Synergy'}
 
 
-@view_config(route_name='synergy_copy_from', renderer='synergy/synergy_submit.mak')
-def synergy_copy_from(request):
+@view_config(route_name='synergy_submit_copy', renderer='synergy/synergy_submit_page.mak')
+def synergy_submit_copy(request):
     return load_synergy(request, False)
 
 
-@view_config(route_name='synergy_load', renderer='synergy/synergy_load.mak')
-def synergy_load(request):
+@view_config(route_name='synergy_view', renderer='synergy/synergy_view.mak')
+def synergy_view(request):
     if request.POST:
         return redirect_new_synergy(request)
     return load_synergy(request, False)
 
 
-@view_config(route_name='synergy_load_raw', renderer='synergy/synergy_view_raw.mak')
-def synergy_load_raw(request):
+@view_config(route_name='synergy_view_basic', renderer='synergy/synergy_view_basic.mak')
+def synergy_view_basic(request):
     return load_synergy(request, True)
 
 
@@ -122,7 +122,7 @@ def redirect_new_synergy(request):
     #Load notification messages up as strings
     for notification in notifications:
         Notifications.enqueue(notification, request.session)
-    url = request.route_url('synergy_load', hash_id=hash_id)
+    url = request.route_url('synergy_view', hash_id=hash_id)
     return HTTPFound(location=url)
 
 
@@ -130,10 +130,10 @@ def load_synergy(request, is_raw):
     hash_id = request.matchdict['hash_id']
     notifications = Notifications.load_from_flash(request.session)
     view_count, urls, counts, name, description, form_dict = load_existing_synergy(hash_id)
-    href = '/synergy/{}' if is_raw else '/synergy/raw/{}'
+    alt_view = '/{}' if is_raw else '/{}/basic'  # Opposite view of the one we're loading
     return merge_dicts(form_dict, {'navbar_index': 'Synergy',
                                    'urls': urls, 'counts': counts,
                                    'name': name, 'description': description,
-                                   'link_alt_href': href.format(hash_id),
+                                   'link_alt_href': alt_view.format(hash_id),
                                    'notifications': notifications,
-                                   'copy_from_href': href.format('from/' + hash_id)})
+                                   'copy_from_href': '/submit/from/{}'.format(hash_id)})

@@ -1,7 +1,7 @@
 <%! import mtgquery.templates.util.common_js as common_js %>
 <%inherit file="../mtgquery_base.mak"/>
 <%namespace name="base" file="../components/base.mak"/>
-<%namespace name="form" file="synergy_form.mak"/>
+<%namespace name="form" file="synergy_submit_form.mak"/>
 
 <%def name="body()">
 ${parent.body()}

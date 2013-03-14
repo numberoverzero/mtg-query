@@ -11,25 +11,18 @@ For general formatting, such as adding lists and headers to descriptions, see **
 
 ####What is Synergy?
 
-Synergy is an easy way to link to a few cards that work well together.  Of course, you can still use Synergy for [combos](/synergy/Xi2PK) :)
+Synergy is an easy way to link to a few cards that work well together.  Of course, you can still use Synergy for [combos](/Xi2PK) :)
 
-Here's a [slightly longer synergy](/synergy/WyXa4).
+Here's a [slightly longer synergy](/WyXa4).
 
-For example, [[Doubling Season]] and [[Tamiyo, the Moon Sage]] allow you to use Tamiyo's ultimate as soon as she enters the battlefield.  Use [Synergy](/synergy) instead of saving the images for both of those cards, editing them together and then uploading to a cool image hosting site like [imgur](http://www.imgur.com).
+For example, [[Doubling Season]] and [[Tamiyo, the Moon Sage]] allow you to use Tamiyo's ultimate as soon as she enters the battlefield.  Use [Synergy](/submit) instead of saving the images for both of those cards, editing them together and then uploading to a cool image hosting site like [imgur](http://www.imgur.com).
 
 1. Enter a title for our synergy (optional)
 2. Give a brief description of what's going on (optional)
 3. Enter one card per line
-4. [Synergize!](/synergy/JYhaz)
+4. [Synergize!](/JYhaz)
 
-But Doubling Season works well for any planeswalker.  Instead of using a specific planeswalker, we can also insert [arbitrary text](/synergy/onYy4)!
-
-####Card Text Formatting
-
-Very similar to above, just put a `#` in front of your text.
-
-* `#Any Planeswalker` for one copy of "Any Planeswalker"
-* `2 #Any elf` for 2 copies of ["Any elf"](/synergy/asEAk)
+But Doubling Season works well for any planeswalker.  Instead of using a specific planeswalker, we can also insert [arbitrary text](/onYy4)!
 
 ##Entering cards{: #entering-cards}
 
@@ -43,14 +36,22 @@ Very similar to above, just put a `#` in front of your text.
     Input                     | Output
     ------------------------- | -----------------------------------------------------------------------------------------------
     `Mizzium Mortars`         | 1 copy of [[Mizzium Mortars]] from Return to Ravnica (most recent)
-    `3 Kird Ape`              | 3 copies of [[kird ape]] from From the Vault: Exiled (most recent)
-    `2 Kird Ape : Revised`    | 2 copies of [[kird ape:rev]] from Revised
-    `Ornithopter : Mirr`      | 1 copy of [[Ornithopter:mirr]] from Mirrodin (partial set name match)
-    `4 Time Walk : Darksteel` | 4 copies of [[time walk]] from Unlimited (wasn't printed in Darksteel, defaults to most recent)
+    `3 Kird Ape`              | 3 copies of [[Kird Ape]] from From the Vault: Exiled (most recent)
+    `2 Kird Ape : Revised`    | 2 copies of [[Kird Ape : Revised]] from Revised
+    `Ornithopter : Mirr`      | 1 copy of [[Ornithopter : Mirr]] from Mirrodin (partial set name match)
+    `4 Time Walk : Darksteel` | 4 copies of [[Time Walk : Darksteel]] from Unlimited (wasn't printed in Darksteel, defaults to most recent)
 
 #####Special Set Notes
 
 Copper Myr is interesting.  Printed in [[copper myr:Mirrodin"Mirrodin"]], then [[copper myr:Planechase"Planechase"]], and then [[copper myr:Scars of Mirrodin"Scars of Mirrodin"]],  any part of the word "Mirrodin" such as `Copper Myr : Mirr` will give us the **most recent set that partially matches** (which is Scars of Mirrodin).  The only way to specify the Mirrodin printing is to provide the exact set name: `4 Copper Myr : mirrodin`.  
+
+
+####Card Text Formatting
+
+Very similar to above, just put a `#` in front of your text.
+
+* `#Any Planeswalker` for one copy of "Any Planeswalker"
+* `2 #Any elf` for 2 copies of ["Any elf"](/asEAk)
 
 
 ####Markup - Popups in Descriptions

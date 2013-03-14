@@ -5,21 +5,27 @@
   def active(condition):
     return 'active' if condition else ''
 %>
-<%def name="navbar(brand, brand_link, labels, hrefs, selected_label)">
-<div class="container">
-  <div class="navbar">
-    <div class="navbar-inner">
-      <a class="brand" href="${brand_link}">${brand}</a>
-      %if len(labels) > 0:
-      <ul class="nav pull-right">
-        % for index, label, href in util.izip(labels, hrefs):
+<%def name="navbar(brand, brand_link, left_links, right_links, selected_label)">
+
+<div class="navbar navbar-inverse">
+  <div class="navbar-inner">
+    <a class="brand" href="${brand_link}">${brand}</a>
+    <div class="nav-collapse">
+      <ul class="nav">
+        % for label, href in zip(*left_links):
         <li class="${active(label == selected_label)}"><a href="${href}">${label}</a></li>
         % endfor
       </ul>
-      % endif
+      
+      <ul class="nav pull-right">
+        % for label, href in zip(*right_links):
+        <li class="${active(label == selected_label)}"><a href="${href}">${label}</a></li>
+        % endfor
+      </ul>
     </div>
   </div>
 </div>
+
 </%def>
 
 <%def name="tabs(labels, contents, selected_index)">

@@ -4,8 +4,8 @@
 
 <%inherit file="../mtgquery_base.mak"/>
 <%namespace name="base" file="../components/base.mak"/>
-<%namespace name="form" file="synergy_form.mak"/>
-<%namespace name="raw" file="synergy_raw.mak"/>
+<%namespace name="form" file="synergy_submit_form.mak"/>
+<%namespace name="raw" file="synergy_view_data.mak"/>
 <%def name="body()">
 ${parent.body()}
 <div class="row-fluid">

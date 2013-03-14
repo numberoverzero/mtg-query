@@ -4,7 +4,7 @@
 
 <%def name="body()">
 <% navbar_index = base.get_var('navbar_index', None) %>
-${components.navbar("mtg-query", "/", ["Synergy", "Help"], ["/synergy", "/help"], navbar_index)}
+${components.navbar("Synergy", "/", [["Submit", "Search", "Random"], ["/submit", "/", "/"]], [["Help"], ["/help"]], navbar_index)}
 ${parent.body()}
 </%def>
 
