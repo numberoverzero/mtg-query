@@ -1,1 +1,1 @@
-..\Scripts\pserve development.ini --reload
+..\Scripts\python runapp.py
