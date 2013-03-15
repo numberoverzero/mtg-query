@@ -4,39 +4,39 @@ from mtgquery.lib.util import INFO, ERROR
 import traceback
 
 
-@view_config(route_name='r403', renderer='basic_error.mak')
+@view_config(route_name='r403', renderer='error.mak')
 def v403(request):
     request.response.status_int = 403
     return error('403')
 
 
-@view_config(route_name='r404', renderer='basic_error.mak')
+@view_config(route_name='r404', renderer='error.mak')
 def v404(request):
     request.response.status_int = 404
     return error('404')
 
 
-@view_config(route_name='r500', renderer='basic_error.mak')
+@view_config(route_name='r500', renderer='error.mak')
 def v500(request):
     request.response.status_int = 500
     return error('500')
 
 
-@forbidden_view_config(renderer='basic_error.mak')
+@forbidden_view_config(renderer='error.mak')
 def forbidden(request):
     INFO("403 Forbidden <{}>".format(request.url))
     request.response.status_int = 403
     return error('403')
 
 
-@notfound_view_config(renderer='basic_error.mak')
+@notfound_view_config(renderer='error.mak')
 def notfound(request):
     INFO("404 NotFound <{}>".format(request.url))
     request.response.status_int = 404
     return error('404')
 
 
-@view_config(context=Exception, renderer='basic_error.mak')
+@view_config(context=Exception, renderer='error.mak')
 def catch_all(exception, request):
     es = str(exception)
     tb = traceback.format_exc()
@@ -45,7 +45,7 @@ def catch_all(exception, request):
     return error('500')
 
 
-@view_config(context=SynergyHashNotFoundException, renderer='basic_error.mak')
+@view_config(context=SynergyHashNotFoundException, renderer='error.mak')
 def synergy_not_found(exception, request):
     request.response.status_int = 404
     response = error('404hash')
