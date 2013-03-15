@@ -40,18 +40,10 @@ def main(global_config, **settings):
                 return HTTPMovedPermanently(request.route_url(name))
             config.add_view(redirector, route_name=name + '-auto')
 
-    #####################################
-    #
-    #       HOME
-    #
-    #####################################
     add_auto_route('home', '/')
-
-    #####################################
-    #
-    #       Help
-    #
-    #####################################
+    add_auto_route('r403', '/403')
+    add_auto_route('r404', '/404')
+    add_auto_route('r500', '/500')
 
     # Help landing page
     add_auto_route('help', '/help')
@@ -62,33 +54,18 @@ def main(global_config, **settings):
     # Magic formatting help
     add_auto_route('magic_symbol_help', '/help/symbols')
 
-    #####################################
-    #
-    #       Errors
-    #
-    #####################################
-
-    add_auto_route('r403', '/403')
-    add_auto_route('r404', '/404')
-    add_auto_route('r500', '/500')
-
-    #####################################
-    #
-    #       Synergy
-    #
-    #####################################
-
     #Submit
     add_auto_route('synergy_submit', '/submit')
-
     #Submit from copy
     add_auto_route('synergy_submit_copy', '/submit/from/{hash_id}')
-
     #View
-    add_auto_route('synergy_view', '/{hash_id}')
-
+    add_auto_route('synergy_view', '/s/{hash_id}')
     #View basic
-    add_auto_route('synergy_view_basic', '/{hash_id}/basic')
+    add_auto_route('synergy_view_basic', '/s/{hash_id}/basic')
+    #Random
+    add_auto_route('synergy_random', '/random')
+    #Search
+    add_auto_route('synergy_search', '/search')
 
-    config.scan()
+    config.include('mtgquery.views')
     return config.make_wsgi_app()
