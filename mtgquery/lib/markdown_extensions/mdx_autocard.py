@@ -12,6 +12,7 @@ from ...models.card_models import Card
 
 CARD_RE = r'(\[\[)([^:^"]+?)(:([^"]+?))?("(.+?)")?(\]\])'
 BASE_CARD_URL = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={}&type=card'
+TEMPLATE = u'<img class="card-corners" src = "{}" alt="{}" /></img>'
 
 
 class AutoCardPattern(Pattern):
@@ -31,7 +32,7 @@ class AutoCardPattern(Pattern):
 
         src = BASE_CARD_URL.format(card.multiverse_id)
         alt = u"{} ({})".format(card.name.name, card.set.set)
-        content = u'<img src="{}" alt="{}" /></img>'.format(src, alt)
+        content = TEMPLATE.format(src, alt)
 
         el = markdown.util.etree.Element('a')
         el.set('class', 'card-tooltip')

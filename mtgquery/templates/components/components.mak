@@ -89,9 +89,9 @@
 <a href="#" class="btn btn-${size} btn-${style}" rel="popover" title="${title}" data-placement="${placement}" data-content="${content}">${label}</a>
 </%def>
 
-<%def name="captioned_image(id, src, alt, top_caption=None, bottom_caption=None)">
+<%def name="captioned_image(id, classt, src, alt, top_caption=None, bottom_caption=None)">
 <div id="${id}" class="captioned-image">
-  <dt><img id="${id}-img" src="${src |n}" alt="${alt or '' |n}" /></dt>
+  <dt><img id="${id}-img" class="${classt}" src="${src |n}" alt="${alt or '' |n}" /></dt>
   <dd class="top-caption" id="${id}-caption-top">
   % if top_caption is not None:
   % for line in top_caption.split('\n'):

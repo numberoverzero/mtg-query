@@ -40,7 +40,7 @@
     % else:
       <% text = None %>
     % endif
-    ${components.captioned_image('synergy-{}'.format(i), url, text, top_caption=text, bottom_caption=count)}
+    ${components.captioned_image('synergy-{}'.format(i), 'card-corners', url, text, top_caption=text, bottom_caption=count)}
   % endfor
   </div>
   % endif

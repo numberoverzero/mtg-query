@@ -8,7 +8,7 @@ ${parent.head()}
 
 <%def name="css()">
 ${parent.css()}
-${base.css_link("//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css")}
+${base.css_link("//netdna.bootstrapcdn.com/bootswatch/2.3.0/cyborg/bootstrap.min.css")}
 </%def>
 
 <%def name="js()">

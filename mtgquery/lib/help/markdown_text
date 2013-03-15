@@ -85,10 +85,10 @@ with escaping:
 
 ####Basic
 
-`[the gewgle](google.com)` produces [the gewgle](google.com)
+`[the gewgle](http://www.google.com)` produces [the gewgle](google.com)
 
 ####Titles
-`[the gewgle](google.com "Optional title for the Googs")` produces [the gewgle](google.com "Optional title for the Googs")
+`[the gewgle](http://www.google.com "Optional title for the Googs")` produces [the gewgle](http://www.google.com "Optional title for the Googs")
 
 ####References
 ```
@@ -96,13 +96,13 @@ with escaping:
 
 Your references don't need to go directly after the link, they can be anywhere...
 
-[1]: google.com "Optional title for the Googs"
+[1]: http://www.google.com "Optional title for the Googs"
 ```
 [the gewgle][1]
 
 Your references don't need to go directly after the link, they can be anywhere...
 
-[1]: google.com "Optional title for the Googs"
+[1]: http://www.google.com "Optional title for the Googs"
 
 ####Image links
 
