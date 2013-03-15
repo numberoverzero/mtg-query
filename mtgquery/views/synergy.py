@@ -37,6 +37,11 @@ def synergy_random(request):
     return HTTPFound(location="/s/{}".format(random_hash()))
 
 
+@view_config(route_name='synergy_search', renderer='synergy/synergy_search.mak')
+def synergy_search(request):
+    return {'navbar_index': 'Search'}
+
+
 def create_synergy(request):
     cards = request.POST['synergy-cards']
     description = request.POST['synergy-description']
