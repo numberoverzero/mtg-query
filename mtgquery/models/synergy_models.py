@@ -16,7 +16,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 
 from ..lib import base58
-from ..lib.alchemy_extensions import has_model
+from ..lib.alchemy_extensions import has_model, get_random
 from ..lib.util import DEBUG
 import random
 
@@ -58,6 +58,16 @@ class Synergy(Base):
         transaction.commit()
 
         return self.hash
+
+    @classmethod
+    def get_random_hash(cls):
+        '''
+        Get a random synergy hash
+        '''
+        synergy = get_random(DBSession, Synergy)
+        if synergy is None:
+            return None
+        return synergy.hash
 
     def random_generate_unique(self, length=5):
         '''

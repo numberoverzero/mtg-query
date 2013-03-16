@@ -34,7 +34,12 @@ def synergy_view_basic(request):
 
 @view_config(route_name='synergy_random')
 def synergy_random(request):
-    return HTTPFound(location="/s/{}".format(random_hash()))
+    hash = random_hash()
+    if hash is None:
+        url = request.route_url('r500')
+    else:
+        url = "/s/{}".format(hash)
+    return HTTPFound(url)
 
 
 @view_config(route_name='synergy_search', renderer='synergy/synergy_search.mak')

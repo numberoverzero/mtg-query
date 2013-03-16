@@ -1,2 +1,5 @@
+from ...models import Synergy
+
+
 def random_hash():
-    return 'JYhaz'
+    return Synergy.get_random_hash()
