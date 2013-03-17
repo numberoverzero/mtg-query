@@ -8,14 +8,14 @@ from mtgquery.lib.synergy.query import random_hash, newest_synergies
 from mtgquery.lib.util import merge_dicts
 
 
-@view_config(route_name='synergy_submit', renderer='synergy/synergy_submit_page.mak')
+@view_config(route_name='synergy_submit', renderer='synergy/synergy_submit.mak')
 def synergy_submit(request):
     if request.POST:
         return create_synergy(request)
-    return {'navbar_index': 'Submit'}
+    return {'navbar_index': 'Submit', 'form_name': '', 'form_description': '', 'form_cards_text': ''}
 
 
-@view_config(route_name='synergy_submit_copy', renderer='synergy/synergy_submit_page.mak')
+@view_config(route_name='synergy_submit_copy', renderer='synergy/synergy_submit.mak')
 def synergy_submit_copy(request):
     if request.POST:
         return create_synergy(request)
@@ -24,12 +24,12 @@ def synergy_submit_copy(request):
 
 @view_config(route_name='synergy_view', renderer='synergy/synergy_view.mak')
 def synergy_view(request):
-    return load_synergy(request, False)
+    return merge_dicts({'navbar_index': 'View', 'view_mode': 'regular'}, load_synergy(request, False))
 
 
-@view_config(route_name='synergy_view_basic', renderer='synergy/synergy_view_basic.mak')
+@view_config(route_name='synergy_view_basic', renderer='synergy/synergy_view.mak')
 def synergy_view_basic(request):
-    return load_synergy(request, True)
+    return merge_dicts({'view_mode': 'basic'}, load_synergy(request, True))
 
 
 @view_config(route_name='synergy_random')

@@ -44,6 +44,10 @@ def markdown_file(filename):
 
     return text
 
-basic_contents = markdown_file("basic_text")
+#basic_contents = markdown_file("basic_text")
 text_contents = markdown_file("markdown_text")
 magic_symbols = markdown_file("magic_symbols")
+
+basic_contents = "TEST"
+#text_contents = "TEST"
+#magic_symbols = "TEST"
