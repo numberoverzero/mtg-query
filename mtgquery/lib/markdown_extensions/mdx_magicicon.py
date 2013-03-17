@@ -33,7 +33,3 @@ class MagicIconExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
         icon_tag = AttrTagPattern(ICON_RE, 'img', {'class': 'magicicon'})
         md.inlinePatterns.add('magicicon', icon_tag, '_end')
-
-
-def makeExtension(configs=None):
-    return MagicIconExtension(configs=configs)

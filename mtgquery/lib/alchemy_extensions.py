@@ -15,7 +15,7 @@ def get_or_create(session, model, **kwargs):
 def has_model(session, model, **kwargs):
     '''
     Returns an object if it exists, or None if it doesn't.
-    (Really just an alias to the first function)
+    (Really just an alias to query)
     '''
     return session.query(model).filter_by(**kwargs).first()
 

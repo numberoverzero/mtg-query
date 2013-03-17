@@ -2,14 +2,6 @@ import markdown
 from markdown.inlinepatterns import Pattern
 from ...models.card_models import Card
 
-# CARD_RE = re.compile(r'''
-#     (\[\[)           # Open square brackets
-#     (.+?)            # Card name
-#     (:([^"]+?))?     # Optional set specifier (we don't want to grab quotes in case they're specifying text)
-#     (\s*"(.+?)")?    # Optional text for the link
-#     (\]\])           # Close square brackets
-# ''', re.VERBOSE)
-
 CARD_RE = r'(\[\[)([^:^"]+?)(:([^"]+?))?("(.+?)")?(\]\])'
 BASE_CARD_URL = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={}&type=card'
 TEMPLATE = u'<img class="card-corners" src = "{}" alt="{}" /></img>'
@@ -48,7 +40,3 @@ class AutoCardExtension(markdown.Extension):
     def extendMarkdown(self, md, md_globals):
         auto_card = AutoCardPattern(CARD_RE)
         md.inlinePatterns.add('autocard', auto_card, '_end')
-
-
-def makeExtension(configs=None):
-    return AutoCardExtension(configs=configs)
