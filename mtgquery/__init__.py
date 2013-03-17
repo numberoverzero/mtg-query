@@ -24,9 +24,8 @@ def main(global_config, **settings):
     session_factory = UnencryptedCookieSessionFactoryConfig('alertsigner')
     config = Configurator(settings=settings, session_factory=session_factory)
     config.add_static_view('templates', 'templates', cache_max_age=3600)
-    config.add_static_view('css', 'templates/css', cache_max_age=3600)
-    config.add_static_view('js', 'templates/js', cache_max_age=3600)
-    config.add_static_view('img', 'templates/img', cache_max_age=3600)
+    config.add_static_view('css', 'css', cache_max_age=3600)
+    config.add_static_view('js', 'js', cache_max_age=3600)
     config.add_static_view('cards', 'mtg_images/card_images', cache_max_age=3600)
     config.add_static_view('icons', 'mtg_images/icons', cache_max_age=3600)
 

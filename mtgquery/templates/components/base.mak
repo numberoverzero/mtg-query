@@ -21,7 +21,7 @@
 <%def name="css()"></%def>
 <%def name="js()">
 ${js_script("http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js")}
-${js_script("/js/underscore-min.js")}
+${js_script("//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js")}
 </%def>
 
 <%def name="js_onready()">
