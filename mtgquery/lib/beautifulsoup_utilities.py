@@ -13,5 +13,5 @@ def add_class(text, element, *classes):
         if 'class' not in tag:
             tag['class'] = []
         tag['class'].extend(classes)
-    string_soup = str(soup)
+    string_soup = unicode(soup)
     return string_soup

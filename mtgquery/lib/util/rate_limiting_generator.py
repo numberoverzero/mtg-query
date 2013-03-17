@@ -1,4 +1,6 @@
 from common_func import always_true
+
+
 def rate_limit(gen, limit, validating_func=None, on_limit=None):
     '''
     gen is the generator to wrap.  this function will yield values from that generator
@@ -20,8 +22,7 @@ def rate_limit(gen, limit, validating_func=None, on_limit=None):
             regardless of whether the value was valid.
             limit is the limit passed in, and last_value is the last value returned from the generator.
     '''
-
-    if validating_func is None: 
+    if validating_func is None:
         validating_func = always_true
     if on_limit is None:
         on_limit = always_true
@@ -29,17 +30,19 @@ def rate_limit(gen, limit, validating_func=None, on_limit=None):
     valid_returns = 0
     for i, value in enumerate(gen):
         valid = validating_func(value)
-        if valid: valid_returns += 1
+        if valid:
+            valid_returns += 1
         if valid_returns > limit:
             on_limit((i, limit, value))
             break
         yield value
 
+
 def line_generator(string, ignore_empty_lines=False):
     '''Splits a string on '\n'.  If ignore_empty_lines, does not return strings that are all whitespace characters.'''
     #Convert windows line ends
-    string = string.replace("\r\n", "\n")
-    for line in string.split('\n'):
+    string = string.replace(u"\r\n", u"\n")
+    for line in string.split(u'\n'):
         if ignore_empty_lines and len(line.strip()) == 0:
             #The line is nothing but whitespace and we're supposed to skip that
             continue

@@ -28,7 +28,7 @@ def submit_new_synergy(cards, name, description):
     exceeded_fmt = "Description truncated: maximum of {} non-blank lines"
     desc_on_limit = lambda (i, limit, value): notifications.append(GenericNotification(exceeded_fmt.format(desc_limit)))
     desc_rate_gen = rate_limit(desc_gen, desc_limit, desc_valid, desc_on_limit)
-    description = '\n'.join(desc_rate_gen)
+    description = u'\n'.join(desc_rate_gen)
 
     #Cut down our cards to max lines
     card_gen = line_generator(cards, False)
