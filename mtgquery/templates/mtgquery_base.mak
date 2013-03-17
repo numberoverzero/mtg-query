@@ -1,4 +1,4 @@
-<%inherit file="components/bootstrap.mak"/>
+<%inherit file="components/base.mak"/>
 <%namespace name="base" file="components/base.mak"/>
 <%namespace name="components" file="components/components.mak"/>
 
