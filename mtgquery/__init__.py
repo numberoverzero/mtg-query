@@ -23,7 +23,6 @@ def main(global_config, **settings):
 
     session_factory = UnencryptedCookieSessionFactoryConfig('alertsigner')
     config = Configurator(settings=settings, session_factory=session_factory)
-    config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_static_view('templates', 'templates', cache_max_age=3600)
     config.add_static_view('css', 'templates/css', cache_max_age=3600)
     config.add_static_view('js', 'templates/js', cache_max_age=3600)
