@@ -1,6 +1,6 @@
+from sqlalchemy.orm import subqueryload
 from sqlalchemy.sql import func
 import random
-random.seed(object())
 
 
 def get_or_create(session, model, **kwargs):
@@ -20,29 +20,44 @@ def has_model(session, model, **kwargs):
     return session.query(model).filter_by(**kwargs).first()
 
 
-def get_random(session, model):
+def get_random(session, model, field='id'):
     '''
-    Returns a random object from a model based on the id field.
+    Returns a random object from a model based on the given field.
+    The field must have positive itegral values (id is the usual culprit here)
     May take longer if rows have been deleted (will try to load non-existant rows)
-    Assumes ids start at 1.
     '''
-    invalid_ids = []
-    max_id = session.query(func.max(model.id)).scalar()
+    bad_vals = []
+    max_val = session.query(func.max(getattr(model, field))).scalar()
 
-    def generate_id():
-        if len(invalid_ids) == max_id:
+    def gen_val():
+        if len(bad_vals) == max_val:
             return None
         while True:
-            id = random.randint(1, max_id)
-            if id not in invalid_ids:
+            val = random.randint(1, max_val)
+            if val not in bad_vals:
                 # Can only be valid once, append
-                invalid_ids.append(id)
-                return id
-
+                bad_vals.append(val)
+                return val
     while True:
-        id = generate_id()
-        if id is None:
+        val = gen_val()
+        if val is None:
             return None
-        obj = has_model(session, model, id=id)
+        obj = has_model(session, model, **{field: val})
         if obj is not None:
             return obj
+
+
+def get_last_n(session, model, n, field='id', subquery_fields=None):
+    '''
+    Returns the last n objects in the table,
+    by id.  If there are less than n objects,
+    returns as many as possible
+    '''
+    field = getattr(model, field).desc()
+    query = session.query(model).order_by(field)
+    if subquery_fields:
+        for sq_field in subquery_fields:
+            field = getattr(model, sq_field)
+            query = query.options(subqueryload(field))
+    r = query.limit(n)
+    return r

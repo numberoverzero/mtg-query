@@ -4,7 +4,7 @@ from pyramid.view import view_config
 from mtgquery.lib import notifications as Notifications
 from mtgquery.lib.synergy.submit_synergy import submit_new_synergy
 from mtgquery.lib.synergy.load_synergy import load_existing_synergy
-from mtgquery.lib.synergy.random_synergy import random_hash
+from mtgquery.lib.synergy.query import random_hash, newest_synergies
 from mtgquery.lib.util import merge_dicts
 
 
@@ -40,6 +40,12 @@ def synergy_random(request):
     else:
         url = "/s/{}".format(hash)
     return HTTPFound(url)
+
+
+@view_config(route_name='synergy_newest', renderer='synergy/synergy_newest.mak')
+def synergy_newest(request):
+    synergies = newest_synergies(10)
+    return {'navbar_index': 'New', 'synergies': synergies}
 
 
 @view_config(route_name='synergy_search', renderer='synergy/synergy_search.mak')

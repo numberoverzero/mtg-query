@@ -4,7 +4,7 @@
 
 <%def name="body()">
 <% navbar_index = base.get_var('navbar_index', None) %>
-${components.navbar("Synergy", "/", [["Submit", "Search", "Random"], ["/submit", "/search", "/random"]], [["Help"], ["/help"]], navbar_index)}
+${components.navbar("Synergy", "/", [["Submit", "Search", "Random", "Newest"], ["/submit", "/search", "/random", "/new"]], [["Help"], ["/help"]], navbar_index)}
 ${parent.body()}
 </%def>
 

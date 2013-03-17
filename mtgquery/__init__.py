@@ -64,6 +64,8 @@ def main(global_config, **settings):
     add_auto_route('synergy_view_basic', '/s/{hash_id}/basic')
     #Random
     add_auto_route('synergy_random', '/random')
+    #New
+    add_auto_route('synergy_newest', '/new')
     #Search
     add_auto_route('synergy_search', '/search')
 

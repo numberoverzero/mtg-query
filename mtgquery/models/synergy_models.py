@@ -64,7 +64,7 @@ class Synergy(Base):
         '''
         Get a random synergy hash
         '''
-        synergy = get_random(DBSession, Synergy)
+        synergy = get_random(DBSession, Synergy, 'id')
         if synergy is None:
             return None
         return synergy.hash
