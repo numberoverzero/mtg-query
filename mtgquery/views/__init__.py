@@ -7,4 +7,4 @@ def includeme(config):
 
 @view_config(route_name='home', renderer='home.mak')
 def home(request):
-    return {}
+    return {'navbar_index': 'Home'}
