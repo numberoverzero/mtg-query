@@ -12,7 +12,7 @@ from mtgquery.lib.util import merge_dicts
 def synergy_submit(request):
     if request.POST:
         return create_synergy(request)
-    return {'navbar_index': 'Submit', 'form_name': '', 'form_description': '', 'form_cards_text': ''}
+    return {'navbar_index': 'Submit', 'form_title': '', 'form_description': '', 'form_cards_text': ''}
 
 
 @view_config(route_name='synergy_submit_copy', renderer='synergy/synergy_submit.mak')
@@ -56,8 +56,8 @@ def synergy_search(request):
 def create_synergy(request):
     cards = request.POST['synergy-cards']
     description = request.POST['synergy-description']
-    name = request.POST['synergy-name']
-    hash_id, notifications = submit_new_synergy(cards, name, description)
+    title = request.POST['synergy-title']
+    hash_id, notifications = submit_new_synergy(cards, title, description)
 
     #Load notification messages up as strings
     for notification in notifications:
@@ -69,10 +69,10 @@ def create_synergy(request):
 def load_synergy(request, is_raw):
     hash_id = request.matchdict['hash_id']
     notifications = Notifications.load_from_flash(request.session)
-    view_count, urls, counts, name, description, form_dict = load_existing_synergy(hash_id)
+    view_count, urls, counts, title, description, form_dict = load_existing_synergy(hash_id)
     alt_view = '/s/{}' if is_raw else '/s/{}/basic'  # Opposite view of the one we're loading
     return merge_dicts(form_dict, {'urls': urls, 'counts': counts,
-                                   'name': name, 'description': description,
+                                   'title': title, 'description': description,
                                    'link_alt_href': alt_view.format(hash_id),
                                    'notifications': notifications,
                                    'copy_from_href': '/submit/from/{}'.format(hash_id)})

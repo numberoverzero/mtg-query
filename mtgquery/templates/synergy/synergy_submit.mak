@@ -10,9 +10,9 @@
       </div>
     </legend>
     <div class="control-group">
-      <label class="control-label" for="synergy-name">Name</label>
+      <label class="control-label" for="synergy-title">Title</label>
       <div class="controls">
-        <input class="text input-xlarge" id="synergy-name" name="synergy-name" placeholder="(optional)" value="${form_name |n}" />
+        <input class="text input-xlarge" id="synergy-title" name="synergy-title" placeholder="(optional)" value="${form_title |n}" />
       </div>
     </div>
     <div class="control-group">

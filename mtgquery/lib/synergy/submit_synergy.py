@@ -16,7 +16,7 @@ from ...models import (
 )
 
 
-def submit_new_synergy(cards, name, description):
+def submit_new_synergy(cards, title, description):
     '''returns the hash that the submitted synergy can be found at'''
 
     notifications = []
@@ -39,7 +39,7 @@ def submit_new_synergy(cards, name, description):
     card_rate_gen = rate_limit(card_gen, card_limit, card_valid, card_on_limit)
     cards = '\n'.join(card_rate_gen)
 
-    synergy = Synergy(create_date=datetime.now(), name=name, description=description, view_count=0, visible=True)
+    synergy = Synergy(create_date=datetime.now(), title=title, description=description, view_count=0, visible=True)
     # For now we're using random generation, since the number of collisions over the 600mil+ possible values is... low.
     #synergy.generate_hash()
     synergy.random_generate_unique()

@@ -11,20 +11,20 @@
   <div class="span2"/>
 </div>
 <div class="well well-small container">
-    ${render(name, description, counts, urls, link_alt_href, 'Wide View', new_link_href=copy_from_href)}
+    ${render(title, description, counts, urls, link_alt_href, 'Wide View', new_link_href=copy_from_href)}
 </div>
 % else:
 <div class="row-fluid">
   <div class="span10 offset1">
-    ${render(name, description, counts, urls, link_alt_href, 'Regular View', new_link_href=copy_from_href)}
+    ${render(title, description, counts, urls, link_alt_href, 'Regular View', new_link_href=copy_from_href)}
   </div>
   <div class="span1"/>
 </div>
 % endif
-<%def name="render(name, description, counts, urls, link_alt_href=None, link_alt_label='Alt. View', new_link_href='#')">
+<%def name="render(title, description, counts, urls, link_alt_href=None, link_alt_label='Alt. View', new_link_href='#')">
 <h3>
-  % if len(name) > 0:
-  ${name}
+  % if len(title) > 0:
+  ${title}
   % else:
   <i>Untitled</i>
   % endif

@@ -13,9 +13,9 @@ def newest_synergies(n=10):
     data = []
     synergies = get_last_n(DBSession, Synergy, n, 'id', ['cards', 'texts'])
     for synergy in synergies:
-        name = synergy.name if len(synergy.name) > 0 else "(Untitled)"
+        title = synergy.title if len(synergy.title) > 0 else "(Untitled)"
         data.append({
-            'name': name,
+            'title': title,
             'length': len(synergy.cards) + len(synergy.texts),
             'url': '/s/{}'.format(synergy.hash)
         })

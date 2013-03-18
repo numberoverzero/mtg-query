@@ -84,12 +84,12 @@ text_regex = re.compile(r"^((?P<count>\d+)\s)?(#(?P<text>.+?))$")
 card_regex = re.compile(r"^((?P<count>\d+)\s)?(?P<card>[^:]+)\s*(:\s*(?P<set>.*))?$")
 
 
-def load_synergy(session, hash, name, description, *cards):
+def load_synergy(session, hash, title, description, *cards):
     has_model = lambda model, **kw: _has_model(session, model, **kw)
     if has_model(Synergy, hash=hash):
         INFO("Skipping help file synergy creation for hash {}: hash already defined.".format(hash))
         return
-    synergy = Synergy(hash=hash, create_date=datetime.now(), name=name, description=description, view_count=0, is_public=True)
+    synergy = Synergy(hash=hash, create_date=datetime.now(), title=title, description=description, view_count=0, is_public=True)
     for i, card in enumerate(cards):
         text_match = text_regex.search(card)
         card_match = card_regex.search(card)

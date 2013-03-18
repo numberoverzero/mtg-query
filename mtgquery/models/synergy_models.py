@@ -28,7 +28,7 @@ class Synergy(Base):
     texts = relationship("SynergyText", backref="synergy")
     create_date = Column(DateTime, nullable=False)
     description = Column(Text)
-    name = Column(Text)
+    title = Column(Text)
     view_count = Column(Integer)
     visible = Column(Boolean)
     hash = Column(Text, unique=True)

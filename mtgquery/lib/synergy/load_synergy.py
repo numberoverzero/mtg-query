@@ -34,7 +34,7 @@ def load_existing_synergy(hash_id):
     counts = [e[1] for e in entries]
     urls = [e[2] for e in entries]
 
-    name = synergy.name
+    title = synergy.title
     description = synergy.description
 
     card_list = card_group.to_list(synergy_cards)
@@ -44,7 +44,7 @@ def load_existing_synergy(hash_id):
     form_cards_text = "\n".join([L[1] for L in lists])
     form_dict = {
         'form_cards_text': form_cards_text,
-        'form_name': name,
+        'form_title': title,
         'form_description': description
     }
-    return synergy.view_count, urls, counts, name, description, form_dict
+    return synergy.view_count, urls, counts, title, description, form_dict
