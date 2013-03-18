@@ -62,7 +62,7 @@
 <%block name="js">
 ${parent.js()}
 % if len(notifications) > 0:
-${js_script("/js/jquery.notifier.js")}
+${base.js_script("/js/jquery.notifier.js")}
 % endif
 </%block>
 
