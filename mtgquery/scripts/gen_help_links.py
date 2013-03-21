@@ -9,20 +9,20 @@ from mtgquery.models import (
     Synergy,
     SynergyCard,
     SynergyText
-    )
+)
 
 synergies = [
     [
-     "Xi2PK",
-     "mill ALL the things",
-     "Now where did I put my [[Oxidize]]...",
-     "1 Painter's Servant : Shadowmoor",
-     "1 Grindstone : Tempest"
+        "Xi2PK",
+        "mill ALL the things",
+        "Now where did I put my [[Oxidize]]...",
+        "1 Painter's Servant : Shadowmoor",
+        "1 Grindstone : Tempest"
     ],
     [
-     "WyXa4",
-     "Lots and lots of lots",
-     """(Works best with Arcum Dagsson fetching required pieces)
+        "WyXa4",
+        "Lots and lots of lots",
+        """(Works best with Arcum Dagsson fetching required pieces)
 Fetch Mirrorworks with Arcum Dagsson
 
 Fetch Sculpting Steel, copy Mirrorworks.  Original Mirrorworks triggers on Steel etb, pay 2 to create a token of Mirrorworks (you now have 3 Mirrorworks in play)
@@ -37,47 +37,46 @@ You can now play something like Staff of Nin or Defense Grid (or both!) and copy
 
 Your next step is to get Memnarch out and make all your lands artifacts, so that you can use Clock of Omens to untap them.  Now every artifact you control basically reads: {tap} Add {u}{U}{u}{u} to your mana pool.  Which you can use to make more permanents into artifacts, to untap the lands even more....
         """,
-     "1 Arcum Dagsson : Coldsnap",
-     "1 Mirrorworks : Mirrodin Besieged",
-     "1 Sculpting Steel : Tenth Edition",
-     "1 Karn, Silver Golem : From the Vault: Relics",
-     "1 Clone : Magic 2013",
-     "1 Gauntlet of Power : Time Spiral"
+        "1 Arcum Dagsson : Coldsnap",
+        "1 Mirrorworks : Mirrodin Besieged",
+        "1 Sculpting Steel : Tenth Edition",
+        "1 Karn, Silver Golem : From the Vault: Relics",
+        "1 Clone : Magic 2013",
+        "1 Gauntlet of Power : Time Spiral"
     ],
     [
-     "JYhaz",
-     "Immediate Planeswalker Ultimate",
-     """Doubling Season doubles the number of counters that would be placed on permanents you control.
+        "JYhaz",
+        "Immediate Planeswalker Ultimate",
+        """Doubling Season doubles the number of counters that would be placed on permanents you control.
 
 When Tamiyo comes into play, she gets 8 loyalty counters instead of 4.
 
 Yay Synergy!""",
-     "1 Doubling Season : Ravnica: City of Guilds",
-     "1 Tamiyo, the Moon Sage : Avacyn Restored"
+        "1 Doubling Season : Ravnica: City of Guilds",
+        "1 Tamiyo, the Moon Sage : Avacyn Restored"
     ],
     [
-     "onYy4",
-     "Immediate Planeswalker Ultimate",
-     """Doubling Season doubles the number of counters that would be placed on permanents you control.
+        "onYy4",
+        "Immediate Planeswalker Ultimate",
+        """Doubling Season doubles the number of counters that would be placed on permanents you control.
 
 When your planeswalker comes into play, it gets twice its starting loyalty (and can probably use its ultimate immediately.)
 
 Yay Synergy!""",
-     "1 Doubling Season : Ravnica: City of Guilds",
-     "1 #Any Planeswalker"
+        "1 Doubling Season : Ravnica: City of Guilds",
+        "1 #Any Planeswalker"
     ],
     [
-     "asEAk",
-     "Burn",
-     """You only really need 1 extra elf.
+        "asEAk",
+        "Burn",
+        """You only really need 1 extra elf.
 
 **But who doesn't want more elves.**""",
-     "1 Wirewood Channeler : Legions",
-     "2 #Any elf",
-     "1 Pemmin's Aura : Scourge",
-     "1 #Any X burn spell"
+        "1 Wirewood Channeler : Legions",
+        "2 #Any elf",
+        "1 Pemmin's Aura : Scourge",
+        "1 #Any X burn spell"
     ]
-
 ]
 
 text_regex = re.compile(r"^((?P<count>\d+)\s)?(#(?P<text>.+?))$")

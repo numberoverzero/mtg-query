@@ -1,5 +1,10 @@
 import random
-from ..lib.util import string_shuffle
+
+
+def string_shuffle(string):
+    chars = list(string)
+    random.shuffle(chars)
+    return ''.join(chars)
 
 __b58chars = 'abcdefghijkmnopqrstuvwxyz123456789ABCDEFGHJKLMNPQRSTUVWXYZ'
 __b58chars = string_shuffle(__b58chars)
@@ -9,25 +14,28 @@ __b58base = len(__b58chars)
 __HARD_MAX = 10000
 __HARD_MIN = 1
 
+
 def encode(value):
     encoded = ''
     while value >= 58:
         div, mod = divmod(value, 58)
-        encoded = __b58chars[mod] + encoded # add to left
+        encoded = __b58chars[mod] + encoded  # add to left
         value = div
-    encoded = __b58chars[value] + encoded # most significant remainder
+    encoded = __b58chars[value] + encoded  # most significant remainder
     return encoded
+
 
 def decode(encoded):
     value = 0
-    column_multiplier = 1;
+    column_multiplier = 1
     for c in encoded[::-1]:
         column = __b58chars.index(c)
         value += column * column_multiplier
         column_multiplier *= 58
     return value
 
-def from_seq_with_rand(seq, rand, seq_len = 6, rand_len = 6):
+
+def from_seq_with_rand(seq, rand, seq_len=6, rand_len=6):
     '''
     Pulls a random number with rand_len digits from rand,
     then concatenates that with seq, formatted for seq_len.
@@ -45,12 +53,14 @@ def from_seq_with_rand(seq, rand, seq_len = 6, rand_len = 6):
     computed_int = int(as_str)
     return encode(computed_int)
 
+
 def get_seq_from(hash, seq_len, rand_len):
     '''
     Returns the sequential id from a given hash
     '''
     computed_int = str(decode(hash))
     return int(computed_int[rand_len:])
+
 
 def gen_random(exact_length=None, min_length=None,
                max_length=None, validate=None):
@@ -75,7 +85,7 @@ def gen_random(exact_length=None, min_length=None,
         the validate function to keep track of trials and bail when there is no acceptable value.
     returns an (int, string) tuple of (generating integer, generated hash) or None if the validate breaks the loop.
     '''
-            
+
     if exact_length is None and min_length is None and max_length is None:
         raise ValueError('No guidance given on length')
 
@@ -100,9 +110,11 @@ def gen_random(exact_length=None, min_length=None,
         cmax_length = exact_length
 
     #Safe check on invalid lengths
-    if cmin_length < 1: cmin_length = 1
-    if cmax_length < 1: cmax_length = 1
-    
+    if cmin_length < 1:
+        cmin_length = 1
+    if cmax_length < 1:
+        cmax_length = 1
+
     #Convert min/max hash lengths to min/max int values
     computed_min = 1 + __b58base ** (cmin_length - 1)
     computed_max = __b58base ** cmax_length

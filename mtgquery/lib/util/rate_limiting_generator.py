@@ -1,6 +1,3 @@
-from common_func import always_true
-
-
 def rate_limit(gen, limit, validating_func=None, on_limit=None):
     '''
     gen is the generator to wrap.  this function will yield values from that generator
@@ -23,9 +20,9 @@ def rate_limit(gen, limit, validating_func=None, on_limit=None):
             limit is the limit passed in, and last_value is the last value returned from the generator.
     '''
     if validating_func is None:
-        validating_func = always_true
+        validating_func = lambda *a, **kw: True
     if on_limit is None:
-        on_limit = always_true
+        on_limit = lambda *a, **kw: True
 
     valid_returns = 0
     for i, value in enumerate(gen):

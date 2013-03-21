@@ -1,7 +1,7 @@
 import mtgquery.controllers.synergy
 from mtgquery.lib import notifications as Notifications
 from pyramid.view import view_config
-from mtgquery.lib.util import merge_dicts
+from mtgquery.util import merge_dicts
 from pyramid.httpexceptions import HTTPFound
 
 
@@ -52,7 +52,7 @@ def create(request):
     cards = request.POST['synergy-cards']
     description = request.POST['synergy-description']
     title = request.POST['synergy-title']
-    hash, notifications = mtgquery.controllers.synergy.create_synergy(cards, description, title)
+    hash, notifications = mtgquery.controllers.synergy.create_synergy(cards, title, description)
     #Load notification messages up as strings
     for notification in notifications:
         Notifications.enqueue(notification, request.session)

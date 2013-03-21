@@ -1,5 +1,6 @@
+from time import clock
 from pyramid.settings import asbool
-from mtgquery.lib.util import DEBUG, simple_timer
+from mtgquery.lib.util import DEBUG
 
 #Pages we don't want to do anything clever with
 skip_exts = [
@@ -14,6 +15,11 @@ def skip_page(url):
     if url is None:
         return True
     return any('.'+ext in url for ext in skip_exts)
+
+
+def simple_timer():
+    start = clock()
+    return lambda: clock() - start
 
 
 def timing_tween_factory(handler, registry):
