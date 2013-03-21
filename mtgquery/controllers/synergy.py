@@ -1,5 +1,5 @@
-from mtgquery.lib.synergy.query import random_hash, newest_synergies
 from datetime import datetime
+from ..lib.alchemy_extensions import get_last_n
 from ..lib.parsers import card_group, synergy_group
 from ..lib.util.rate_limiting_generator import line_generator, rate_limit
 from ..lib.notifications import GenericNotification
@@ -117,8 +117,18 @@ def load_synergy(hash):
 
 
 def get_random_hash():
-    return random_hash()
+    return Synergy.get_random_hash()
 
 
 def get_newest_synergyies():
-    return newest_synergies(10)
+    n = 10
+    data = []
+    synergies = get_last_n(DBSession, Synergy, n, 'id', ['cards', 'texts'])
+    for synergy in synergies:
+        title = synergy.title if len(synergy.title) > 0 else "(Untitled)"
+        data.append({
+            'title': title,
+            'length': len(synergy.cards) + len(synergy.texts),
+            'url': '/s/{}'.format(synergy.hash)
+        })
+    return data

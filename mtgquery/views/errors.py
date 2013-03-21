@@ -1,5 +1,5 @@
 from pyramid.view import view_config, forbidden_view_config, notfound_view_config
-from mtgquery.lib.synergy import SynergyHashNotFoundException
+from mtgquery.controllers.synergy import SynergyHashNotFoundException
 from mtgquery.lib.util import INFO, ERROR
 from mtgquery.controllers.error import error_data
 import traceback
