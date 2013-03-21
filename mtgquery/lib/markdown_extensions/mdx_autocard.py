@@ -1,6 +1,6 @@
 import markdown
 from markdown.inlinepatterns import Pattern
-from ...models.card_models import Card
+from ...models.card import Card
 
 CARD_RE = r'(\[\[)([^:^"]+?)(:([^"]+?))?("(.+?)")?(\]\])'
 BASE_CARD_URL = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={}&type=card'

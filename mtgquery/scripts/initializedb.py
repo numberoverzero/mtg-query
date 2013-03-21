@@ -10,8 +10,8 @@ from pyramid.paster import (
 )
 
 from mtgquery.models import (
-    DBSession,
     Base,
+    DBSession,
 )
 
 

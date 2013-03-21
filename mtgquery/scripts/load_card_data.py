@@ -10,9 +10,9 @@ import transaction
 #
 ##########################
 
-from mtgquery.models import Card as RealCard
-from mtgquery.models import (
-    DBSession,
+from mtgquery.models import DBSession
+from mtgquery.models.card import (
+    Card,
     CardArtist,
     CardCost,
     CardFlavorText,
@@ -26,7 +26,7 @@ from mtgquery.models import (
     CardType,
     CardWatermark
 )
-from mtgquery.models import get_or_create
+from mtgquery.lib.alchemy_extensions import get_or_create
 from mtgquery.scripts import gen_help_links
 import sqlsoup
 
@@ -54,7 +54,7 @@ def load_card(srcCard):
     number = srcCard.cardnum
     power = srcCard.power
     toughness = srcCard.toughness
-    card = RealCard(
+    card = Card(
         multiverse_id=multiverse_id,
         number=number,
         power=power,

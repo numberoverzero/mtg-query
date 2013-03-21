@@ -1,4 +1,3 @@
-from ..lib.alchemy_extensions import get_or_create
 from sqlalchemy.orm import (
     scoped_session,
     sessionmaker,

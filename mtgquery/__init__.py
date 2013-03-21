@@ -6,8 +6,8 @@ import controllers.help
 import os
 
 from .models import (
-    DBSession,
     Base,
+    DBSession,
 )
 
 

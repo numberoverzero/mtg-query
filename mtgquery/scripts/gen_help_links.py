@@ -3,9 +3,9 @@ import transaction
 from datetime import datetime
 from mtgquery.lib.alchemy_extensions import has_model as _has_model
 from mtgquery.util import get_logger
-from mtgquery.models import (
-    DBSession,
-    Card,
+from mtgquery.models import DBSession
+from ..models.card import Card
+from ..models.synergy import (
     Synergy,
     SynergyCard,
     SynergyText
