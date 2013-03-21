@@ -139,7 +139,7 @@ def create_synergy(cards, title, description):
                 #LOG MESSAGE ABOUT INVALID FORMAT
                 synergy.visible = False
 
-    return synergy.hash, notifications
+    return synergy.hash
 
 
 def load_synergy(hash):
