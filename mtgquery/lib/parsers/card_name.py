@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from unicode_card_names import special_cards
+from ...data import load
 special_cards_exact = []
-for card_name in special_cards.split('\n'):
+for card_name in load('cards.special_names').split('\n'):
     if len(card_name) == 0:
         continue
     card_name = unicode(card_name, encoding='utf-8').strip()

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-special_cards = """
 Ærathi Berserker
 Æther Adept
 Æther Barrier
@@ -31,4 +29,3 @@ Fold into Æther
 Frozen Æther
 Gate to the Æther
 Séance
-"""
