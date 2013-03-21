@@ -1,8 +1,9 @@
-import os
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPMovedPermanently
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from sqlalchemy import engine_from_config
+import controllers.help
+import os
 
 from .models import (
     DBSession,
@@ -14,12 +15,16 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
 
+    # Connect DB
     sqlalchemy_url = os.environ.get('DATABASE_URL')
     settings['sqlalchemy.url'] = sqlalchemy_url
-
     engine = engine_from_config(settings, 'sqlalchemy.')
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
+
+    # Preheat any cached data
+    if settings['preheat_cache'] == 'true':
+        controllers.help.preheat_cache()
 
     session_factory = UnencryptedCookieSessionFactoryConfig('alertsigner')
     config = Configurator(settings=settings, session_factory=session_factory)
