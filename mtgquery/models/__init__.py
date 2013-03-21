@@ -9,24 +9,10 @@ DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
-from card_models import (
-    Card,
-    CardArtist,
-    CardCost,
-    CardFlavorText,
-    CardName,
-    CardOracleRules,
-    CardPrintedName,
-    CardPrintedRules,
-    CardPrintedType,
-    CardRarity,
-    CardSet,
-    CardType,
-    CardWatermark
-)
 
-from synergy_models import (
-    Synergy,
-    SynergyCard,
-    SynergyText
-)
+class InvalidDataException(Exception):
+    def __init__(self, msg):
+        self.msg = msg
+
+    def __str__(self):
+        return self.msg

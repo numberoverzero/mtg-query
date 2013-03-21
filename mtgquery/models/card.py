@@ -1,6 +1,7 @@
 from ..models import (
     Base,
-    DBSession
+    DBSession,
+    InvalidDataException
 )
 from sqlalchemy import (
     Column,
@@ -11,7 +12,6 @@ from sqlalchemy import (
 
 from sqlalchemy.orm import relationship
 from mtgquery.lib.parsers import resolve_set, get_exact_name
-from mtgquery.lib.notifications import UnknownCardName
 
 
 class Card(Base):
@@ -36,29 +36,24 @@ class Card(Base):
     watermark_id = Column(Integer, ForeignKey('cardwatermarks.id'))
 
     @classmethod
-    def interpolate_name_and_set(cls, name, set, notifications=None):
+    def interpolate_name_and_set(cls, name, set):
         '''
         name and set are both strings.  set can be None.
 
         if the specified set can't be found, will fall back to the most recent printing of the named card
-
-        notifications is an optional list which will be appended to when exceptions are encountered
-            (such as bad format, unknown card name, unknown set name, invalid set name)
         '''
         if name is None:
-            return None
+            raise InvalidDataException()
         special_name = get_exact_name(name)
         if special_name is not None:
             name = special_name
 
         card_name = DBSession.query(CardName).filter(CardName.name.ilike(name)).first()
         if card_name is None:
-            if notifications is not None:
-                notifications.append(UnknownCardName(name))
-            return None
+            raise InvalidDataException()
 
         possible_sets = [c.set.set for c in card_name.cards]
-        best_set = resolve_set(set, possible_sets, card_name.name, notifications=notifications)
+        best_set = resolve_set(set, possible_sets, card_name.name)
 
         card_set = DBSession.query(CardSet).filter(CardSet.set.ilike(best_set)).first()
         card = DBSession.query(Card).filter_by(name=card_name, set=card_set).first()
