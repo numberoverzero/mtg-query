@@ -1,4 +1,3 @@
-from mtgquery.lib.notifications import InvalidLine
 import re
 card_regex = re.compile(r"^((?P<count>\d+)\s)?(?P<card>[^:]+)\s*(:\s*(?P<set>.*))?$")
 
@@ -13,7 +12,7 @@ def skip_line(line, re_ignores):
     return False
 
 
-def cardcount_generator(string, notifications=None, re_ignores=None):
+def cardcount_generator(string, re_ignores=None):
     lines = string.split("\n")
     for index, line in enumerate(lines):
         line = line.strip()
@@ -25,8 +24,6 @@ def cardcount_generator(string, notifications=None, re_ignores=None):
         if not match:
             if len(line) == 0:
                 continue
-            if notifications is not None:
-                notifications.append(InvalidLine(line))
             continue
 
         count = match.group('count')

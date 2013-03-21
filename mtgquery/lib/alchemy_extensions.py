@@ -29,20 +29,20 @@ def get_random(session, model, field='id'):
     bad_vals = []
     max_val = session.query(func.max(getattr(model, field))).scalar()
 
-    def gen_val():
+    def values():
         if len(bad_vals) == max_val:
-            return None
+            yield None
         while True:
             val = random.randint(1, max_val)
             if val not in bad_vals:
                 # Can only be valid once, append
                 bad_vals.append(val)
-                return val
-    while True:
-        val = gen_val()
-        if val is None:
+                yield val
+
+    for value in values():
+        if value is None:
             return None
-        obj = has_model(session, model, **{field: val})
+        obj = has_model(session, model, **{field: value})
         if obj is not None:
             return obj
 
