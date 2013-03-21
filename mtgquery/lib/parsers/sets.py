@@ -1,7 +1,4 @@
-from mtgquery.lib.notifications import (
-    UnknownSetName,
-    InvalidSet
-)
+from mtgquery.models import InvalidDataException
 
 
 ascending_set_names = [
@@ -187,14 +184,14 @@ def set_cmp(set_name_1, set_name_2):
         return 0
 
 
-def resolve_set(set, sets, card_name, notifications=None):
+def resolve_set(set, sets, card_name):
     '''
     for a given set name (possible None), return the best set out of the possible sets.
     if the given set isn't one of the values in sets, returns the most recent set in sets.
     '''
 
     if sets is None or len(sets) == 0:
-        raise ValueError("Can't pick the best set from an empty list")
+        raise InvalidDataException()
 
     #Exact case-sensitive name
     if set in sets:
@@ -220,14 +217,12 @@ def resolve_set(set, sets, card_name, notifications=None):
             return sorted_sets[index]
 
     #No matches
-    if notifications is not None:
-        real_set = is_partial_of_set_name(set)
-        if real_set:
-            #it's a real set, just not valid for this card
-            notifications.append(InvalidSet(real_set, card_name))
-        else:
-            #this isn't a real set
-            notifications.append(UnknownSetName(set))
 
-    #Just return the most recent set
+    #real_set = is_partial_of_set_name(set)
+    #if real_set:
+    #    #it's a real set, just not valid for this card
+    #    raise InvalidDataException()
+    #else:
+    #    #this isn't a real set
+    #    raise InvalidDataException()
     return sorted_sets[0]

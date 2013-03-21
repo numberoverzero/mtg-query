@@ -1,17 +1,12 @@
 from datetime import datetime
 from ..lib.alchemy_extensions import get_last_n
 from ..lib.parsers import card_group, synergy_group
-from ..lib.util.rate_limiting_generator import line_generator, rate_limit
-from ..lib.notifications import GenericNotification
-from ..lib.parsers import (
-    cardcount_generator,
-    synergytext_generator,
-    synergy_text_regex
-)
 from ..models import (
     DBSession,
-
-    Card,
+    InvalidDataException,
+)
+from ..models.card import Card
+from ..models.synergy import (
     Synergy,
     SynergyCard,
     SynergyText
@@ -27,47 +22,122 @@ class SynergyHashNotFoundException(Exception):
         return "Could not find the hash \"{}\"".format(self.hash)
 
 
+import re
+MAX_ENTRIES = 40
+MAX_DESCRIPTION_LINES = 40
+MAX_DESCRIPTION_LINE_LENGTH = 500
+SYNERGY_TEXT_REGEX = re.compile(r"^((?P<count>\d+)\s)?(#(?P<text>.+?))$")
+CARD_REGEX = re.compile(r"^((?P<count>\d+)\s)?(?P<card>[^:]+)\s*(:\s*(?P<set>.*))?$")
+
+
+def get_custom_text(string):
+    string = string.strip()
+    match = SYNERGY_TEXT_REGEX.search(string)
+    if not match:
+        return None
+
+    count = match.group('count')
+    if count:
+        count = count.strip()
+    count = int(count) if count else 1
+
+    text = match.group('text')
+    if text:
+        text = text.strip()
+
+    return count, text
+
+
+def get_card_and_set(string, notifications=None):
+        string = string.strip()
+        match = CARD_REGEX.search(string)
+        if not match:
+            return None
+
+        count = match.group('count')
+        if count:
+            count = count.strip()
+        count = int(count) if count else 1
+
+        card = match.group('card')
+        if card:
+            card = card.strip()
+
+        set = match.group('set')
+        if set:
+            set = set.strip()
+
+        return card, count, set
+
+
+def nb_lines(string):
+    string = string.replace(u"\r\n", u"\n")
+    lines = string.split(u"\n")
+    return filter(nonblank, lines)
+
+
+def nonblank(line):
+    return len(line.strip()) > 0
+
+
 def create_synergy(cards, title, description):
     '''returns the hash that the submitted synergy can be found at'''
-
     notifications = []
 
-    #Cut down our description to max lines
-    desc_gen = line_generator(description, False)
-    desc_limit = 10
-    desc_valid = lambda line: len(line.strip()) > 0
-    exceeded_fmt = "Description truncated: maximum of {} non-blank lines"
-    desc_on_limit = lambda (i, limit, value): notifications.append(GenericNotification(exceeded_fmt.format(desc_limit)))
-    desc_rate_gen = rate_limit(desc_gen, desc_limit, desc_valid, desc_on_limit)
-    description = u'\n'.join(desc_rate_gen)
-
-    #Cut down our cards to max lines
-    card_gen = line_generator(cards, False)
-    card_limit = 40
-    card_valid = lambda line: len(line.strip()) > 0
-    exceeded_fmt = "Cards truncated: maximum of {} cards/text"
-    card_on_limit = lambda (i, limit, value): notifications.append(GenericNotification(exceeded_fmt.format(card_limit)))
-    card_rate_gen = rate_limit(card_gen, card_limit, card_valid, card_on_limit)
-    cards = '\n'.join(card_rate_gen)
-
-    synergy = Synergy(create_date=datetime.now(), title=title, description=description, view_count=0, visible=True)
-    # For now we're using random generation, since the number of collisions over the 600mil+ possible values is... low.
-    #synergy.generate_hash()
+    synergy = Synergy(create_date=datetime.now(), title=title, view_count=0, visible=True)
     synergy.random_generate_unique()
     DBSession.add(synergy)
 
-    re_ignores = [synergy_text_regex]
-    for card_name, count, set, index in cardcount_generator(cards, notifications=notifications, re_ignores=re_ignores):
-        card = Card.interpolate_name_and_set(card_name, set, notifications=notifications)
-        if card is None:
-            continue
+    description = description.replace(u"\r\n", u"\n")
+    description_lines = description.split(u"\n")
 
-        synergy_card = SynergyCard(synergy=synergy, card=card, index=index, quantity=count)
-        DBSession.add(synergy_card)
+    if len(description_lines) > MAX_DESCRIPTION_LINES:
+        synergy.visible = False
+        description_lines = description_lines[:MAX_ENTRIES]
+        #ADD A MESSAGE ABOUT TRUNCATED CONTENT
+        #"Description truncated: maximum of {} lines"
 
-    for text, count, index in synergytext_generator(cards, notifications=notifications):
-        synergy_text = SynergyText(synergy=synergy, text=text, index=index, quantity=count)
-        DBSession.add(synergy_text)
+    notified = False
+    for i, line in enumerate(description_lines):
+        if len(line) > MAX_DESCRIPTION_LINE_LENGTH:
+            synergy.visible = False
+            description_lines[i] = line[:MAX_DESCRIPTION_LINE_LENGTH]
+            if not notified:
+                notified = True
+                #ADD A MESSAGE ABOUT TRUNCATED CONTENT
+                #"Entry truncated: maximum of {} cards/text"
+
+    description = u'\n'.join(description_lines)
+    synergy.description = description
+
+    entry_lines = nb_lines(cards)
+    if len(entry_lines) > MAX_ENTRIES:
+        synergy.visible = False
+        entry_lines = entry_lines[:MAX_ENTRIES]
+        #ADD A MESSAGE ABOUT TRUNCATED CONTENT
+
+    for index, line in enumerate(entry_lines):
+        custom_text = get_custom_text(line)
+        if custom_text:
+            count, text = custom_text
+            synergy_text = SynergyText(synergy=synergy, text=text, index=index, quantity=count)
+            DBSession.add(synergy_text)
+        else:
+            card_and_set = get_card_and_set(line)
+            if card_and_set:
+                card_name, count, set = card_and_set
+                try:
+                    card = Card.interpolate_name_and_set(card_name, set)
+                    synergy_card = SynergyCard(synergy=synergy, card=card, index=index, quantity=count)
+                    DBSession.add(synergy_card)
+                except InvalidDataException as e:
+                    #LOG THE MESSAGE FOR THEM
+                    synergy.visible = False
+                    print e
+            else:
+                #Not synergy text, not card.  Log invalid format
+                #LOG MESSAGE ABOUT INVALID FORMAT
+                synergy.visible = False
 
     return synergy.hash, notifications
 
