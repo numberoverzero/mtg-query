@@ -1,6 +1,8 @@
 from time import clock
 from pyramid.settings import asbool
-from mtgquery.lib.util import DEBUG
+from mtgquery.util import get_logger
+
+log = get_logger(__name__)
 
 #Pages we don't want to do anything clever with
 skip_exts = [
@@ -32,7 +34,7 @@ def timing_tween_factory(handler, registry):
             finally:
                 delta = timer()
                 if not skip_page(request.url):
-                    DEBUG('Loaded <{url}> in <{time}> seconds'.format(url=request.url, time=str(delta)))
+                    log.debug('Loaded <{url}> in <{time}> seconds'.format(url=request.url, time=str(delta)))
             return response
         return timing_tween
     # if timing support is not enabled, return the original handler

@@ -2,7 +2,7 @@ import re
 import transaction
 from datetime import datetime
 from mtgquery.lib.alchemy_extensions import has_model as _has_model
-from mtgquery.lib.util import INFO
+from mtgquery.util import get_logger
 from mtgquery.models import (
     DBSession,
     Card,
@@ -10,6 +10,8 @@ from mtgquery.models import (
     SynergyCard,
     SynergyText
 )
+
+log = get_logger(__name__)
 
 synergies = [
     [
@@ -86,7 +88,7 @@ card_regex = re.compile(r"^((?P<count>\d+)\s)?(?P<card>[^:]+)\s*(:\s*(?P<set>.*)
 def load_synergy(session, hash, title, description, *cards):
     has_model = lambda model, **kw: _has_model(session, model, **kw)
     if has_model(Synergy, hash=hash):
-        INFO("Skipping help file synergy creation for hash {}: hash already defined.".format(hash))
+        log.info("Skipping help file synergy creation for hash {}: hash already defined.".format(hash))
         return
     synergy = Synergy(hash=hash, create_date=datetime.now(), title=title, description=description, view_count=0, is_public=True)
     for i, card in enumerate(cards):
@@ -122,7 +124,7 @@ def load_synergy(session, hash, title, description, *cards):
 
             synergy_card = SynergyCard(synergy=synergy, card=card, index=i, quantity=count)
             session.add(synergy_card)
-    INFO("Generated help file synergy for hash {}".format(hash))
+    log.info("Generated help file synergy for hash {}".format(hash))
 
 
 def main():

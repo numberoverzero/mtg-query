@@ -17,8 +17,10 @@ from sqlalchemy.orm import relationship
 
 from ..lib import base58
 from ..lib.alchemy_extensions import has_model, get_random
-from ..lib.util import DEBUG
+from ..util import get_logger
 import random
+
+log = get_logger(__name__)
 
 
 class Synergy(Base):
@@ -81,7 +83,7 @@ class Synergy(Base):
             attempted[0] += 1
             if has_model(DBSession, Synergy, hash=hash):
                 return -1
-            DEBUG("Generated Synergy Hash <{}> in {} tries.".format(hash, attempted[0]))
+            log.debug("Generated Synergy Hash <{}> in {} tries.".format(hash, attempted[0]))
             return 1
 
         seq, self.hash = base58.gen_random(exact_length=length, validate=validate)

@@ -1,20 +1,22 @@
 from pyramid.view import view_config, forbidden_view_config, notfound_view_config
 from mtgquery.controllers.synergy import SynergyHashNotFoundException
-from mtgquery.lib.util import INFO, ERROR
+from mtgquery.util import get_logger
 from mtgquery.controllers.error import error_data
 import traceback
+
+log = get_logger(__name__)
 
 
 @forbidden_view_config(renderer='error.mak')
 def forbidden(request):
-    INFO("403 Forbidden <{}>".format(request.url))
+    log.info("403 Forbidden <{}>".format(request.url))
     request.response.status_int = 403
     return error_data('403')
 
 
 @notfound_view_config(renderer='error.mak')
 def notfound(request):
-    INFO("404 NotFound <{}>".format(request.url))
+    log.info("404 NotFound <{}>".format(request.url))
     request.response.status_int = 404
     return error_data('404')
 
@@ -23,7 +25,7 @@ def notfound(request):
 def catch_all(exception, request):
     es = str(exception)
     tb = traceback.format_exc()
-    ERROR(es + '\n' + tb)
+    log.error(es + '\n' + tb)
     request.response.status_int = 500
     return error_data('500')
 
