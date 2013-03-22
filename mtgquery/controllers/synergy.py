@@ -4,7 +4,6 @@ from ..models import (
     DBSession,
     InvalidDataException,
 )
-from ..models.card import Card
 from ..models.synergy import (
     Synergy,
     SynergyCard,
@@ -18,7 +17,7 @@ class SynergyHashNotFoundException(Exception):
 
     @property
     def msg(self):
-        return "Could not find the hash \"{}\"".format(self.hash)
+        return u"Could not find the hash \"{}\"".format(self.hash)
 
 
 MAX_ENTRIES = 40
@@ -103,13 +102,13 @@ def load_synergy(hash):
 
     #Generate urls and counts
     entries = []
-    url_base = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={mvid}&type=card'
+    url_base = u'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={mvid}&type=card'
 
     for sc in synergy_cards:
         url = url_base.format(mvid=sc.card.multiverse_id)
         entries.append((sc.index, sc.quantity, url))
     for st in synergy_texts:
-        url = 'http://res.cloudinary.com/mtg-query/image/upload/card_back.jpg'
+        url = u'http://res.cloudinary.com/mtg-query/image/upload/card_back.jpg'
         text = st.text
         url = text, url  # Packed data for synergy_raw
         entries.append((st.index, st.quantity, url))
@@ -122,7 +121,7 @@ def load_synergy(hash):
 
     indexed = [(i.index, i) for i in synergy_cards + synergy_texts]
     indexed.sort()
-    form_cards_text = "\n".join(str(item) for index, item in indexed)
+    form_cards_text = u"\n".join(unicode(item) for index, item in indexed)
     form_dict = {
         'form_cards_text': form_cards_text,
         'form_title': title,
@@ -138,12 +137,12 @@ def get_random_hash():
 def get_newest_synergyies():
     n = 10
     data = []
-    synergies = get_last_n(DBSession, Synergy, n, 'id', ['cards', 'texts'])
+    synergies = get_last_n(DBSession, Synergy, n, u'id', [u'cards', u'texts'])
     for synergy in synergies:
-        title = synergy.title if len(synergy.title) > 0 else "(Untitled)"
+        title = synergy.title if len(synergy.title) > 0 else u"(Untitled)"
         data.append({
             'title': title,
             'length': len(synergy.cards) + len(synergy.texts),
-            'url': '/s/{}'.format(synergy.hash)
+            'url': u'/s/{}'.format(synergy.hash)
         })
     return data

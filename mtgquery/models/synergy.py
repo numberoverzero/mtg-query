@@ -24,9 +24,9 @@ import random
 
 log = get_logger(__name__)
 SYNERGY_TEXT_REGEX = re.compile(r"^((?P<count>\d+)\s)?(#(?P<text>.+?))$")
-SYNERGY_TEXT_FMT = "{count} #{text}"
+SYNERGY_TEXT_FMT = u"{count} #{text}"
 CARD_REGEX = re.compile(r"^((?P<count>\d+)\s)?(?P<name>[^:]+)\s*(:\s*(?P<set>.*))?$")
-SYNERGY_CARD_FMT = "{count} {name} : {set}"
+SYNERGY_CARD_FMT = u"{count} {name} : {set}"
 
 
 class Synergy(Base):

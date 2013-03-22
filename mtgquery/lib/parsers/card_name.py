@@ -4,8 +4,7 @@ special_cards_exact = []
 for card_name in load('cards.special_names').split('\n'):
     if len(card_name) == 0:
         continue
-    card_name = unicode(card_name, encoding='utf-8').strip()
-    special_cards_exact.append(card_name)
+    special_cards_exact.append(card_name.strip())
 
 valid_spellings = {}
 ci_valid_spellings = {}

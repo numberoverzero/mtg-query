@@ -14,4 +14,4 @@ def load(filename):
     filepath = abs_path(filename)
     with open(filepath) as f:
         data = f.read()
-    return data
+    return unicode(data, encoding='utf-8')
