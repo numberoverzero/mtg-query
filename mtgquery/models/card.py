@@ -11,7 +11,8 @@ from sqlalchemy import (
 )
 
 from sqlalchemy.orm import relationship
-from mtgquery.lib.parsers import resolve_set, get_exact_name
+from mtgquery.lib.parsers.sets import resolve_set
+from mtgquery.lib.parsers.card_name import get_exact_name
 
 
 class Card(Base):

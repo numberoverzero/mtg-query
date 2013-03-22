@@ -1,6 +1,5 @@
 from datetime import datetime
 from ..lib.alchemy_extensions import get_last_n
-from ..lib.parsers import card_group, synergy_group
 from ..models import (
     DBSession,
     InvalidDataException,
@@ -22,52 +21,9 @@ class SynergyHashNotFoundException(Exception):
         return "Could not find the hash \"{}\"".format(self.hash)
 
 
-import re
 MAX_ENTRIES = 40
 MAX_DESCRIPTION_LINES = 40
 MAX_DESCRIPTION_LINE_LENGTH = 500
-SYNERGY_TEXT_REGEX = re.compile(r"^((?P<count>\d+)\s)?(#(?P<text>.+?))$")
-CARD_REGEX = re.compile(r"^((?P<count>\d+)\s)?(?P<card>[^:]+)\s*(:\s*(?P<set>.*))?$")
-
-
-def get_custom_text(string):
-    string = string.strip()
-    match = SYNERGY_TEXT_REGEX.search(string)
-    if not match:
-        return None
-
-    count = match.group('count')
-    if count:
-        count = count.strip()
-    count = int(count) if count else 1
-
-    text = match.group('text')
-    if text:
-        text = text.strip()
-
-    return count, text
-
-
-def get_card_and_set(string, notifications=None):
-        string = string.strip()
-        match = CARD_REGEX.search(string)
-        if not match:
-            return None
-
-        count = match.group('count')
-        if count:
-            count = count.strip()
-        count = int(count) if count else 1
-
-        card = match.group('card')
-        if card:
-            card = card.strip()
-
-        set = match.group('set')
-        if set:
-            set = set.strip()
-
-        return card, count, set
 
 
 def nb_lines(string):
@@ -82,7 +38,6 @@ def nonblank(line):
 
 def create_synergy(cards, title, description):
     '''returns the hash that the submitted synergy can be found at'''
-    notifications = []
 
     synergy = Synergy(create_date=datetime.now(), title=title, view_count=0, visible=True)
     synergy.random_generate_unique()
@@ -117,28 +72,20 @@ def create_synergy(cards, title, description):
         #ADD A MESSAGE ABOUT TRUNCATED CONTENT
 
     for index, line in enumerate(entry_lines):
-        custom_text = get_custom_text(line)
-        if custom_text:
-            count, text = custom_text
-            synergy_text = SynergyText(synergy=synergy, text=text, index=index, quantity=count)
+        try:
+            synergy_text = SynergyText.from_string(line)
+            synergy_text.synergy = synergy
+            synergy_text.index = index
             DBSession.add(synergy_text)
-        else:
-            card_and_set = get_card_and_set(line)
-            if card_and_set:
-                card_name, count, set = card_and_set
-                try:
-                    card = Card.interpolate_name_and_set(card_name, set)
-                    synergy_card = SynergyCard(synergy=synergy, card=card, index=index, quantity=count)
-                    DBSession.add(synergy_card)
-                except InvalidDataException as e:
-                    #LOG THE MESSAGE FOR THEM
-                    synergy.visible = False
-                    print e
-            else:
-                #Not synergy text, not card.  Log invalid format
-                #LOG MESSAGE ABOUT INVALID FORMAT
+        except InvalidDataException as e:
+            try:
+                synergy_card = SynergyCard.from_string(line)
+                synergy_card.synergy = synergy
+                synergy_card.index = index
+                DBSession.add(synergy_card)
+            except InvalidDataException as e:
                 synergy.visible = False
-
+                print e
     return synergy.hash
 
 
@@ -173,11 +120,9 @@ def load_synergy(hash):
     title = synergy.title
     description = synergy.description
 
-    card_list = card_group.to_list(synergy_cards)
-    text_list = synergy_group.to_list(synergy_texts)
-    lists = card_list + text_list
-    lists.sort()
-    form_cards_text = "\n".join([L[1] for L in lists])
+    indexed = [(i.index, i) for i in synergy_cards + synergy_texts]
+    indexed.sort()
+    form_cards_text = "\n".join(str(item) for index, item in indexed)
     form_dict = {
         'form_cards_text': form_cards_text,
         'form_title': title,

@@ -1,9 +1,11 @@
+import re
 import transaction
 from ..models import (
     Base,
-    DBSession
+    DBSession,
+    InvalidDataException
 )
-
+from ..models.card import Card
 from sqlalchemy import (
     Boolean,
     Column,
@@ -21,6 +23,10 @@ from ..util import get_logger
 import random
 
 log = get_logger(__name__)
+SYNERGY_TEXT_REGEX = re.compile(r"^((?P<count>\d+)\s)?(#(?P<text>.+?))$")
+SYNERGY_TEXT_FMT = "{count} #{text}"
+CARD_REGEX = re.compile(r"^((?P<count>\d+)\s)?(?P<name>[^:]+)\s*(:\s*(?P<set>.*))?$")
+SYNERGY_CARD_FMT = "{count} {name} : {set}"
 
 
 class Synergy(Base):
@@ -105,6 +111,33 @@ class SynergyCard(Base):
     synergy_id = Column(Integer, ForeignKey('synergies.id'))
     specified_set = Column(Boolean)
 
+    @classmethod
+    def from_string(cls, string):
+        '''Does not set up index or synergy_id'''
+        string = string.strip()
+        match = CARD_REGEX.search(string)
+        if not match:
+            raise InvalidDataException("Incorrect card format")
+
+        count = match.group('count')
+        if count:
+            count = count.strip()
+        count = int(count) if count else 1
+
+        name = match.group('name')
+        if name:
+            name = name.strip()
+
+        set = match.group('set')
+        if set:
+            set = set.strip()
+
+        card = Card.interpolate_name_and_set(name, set)
+        return cls(card=card, quantity=count)
+
+    def __str__(self):
+        return SYNERGY_CARD_FMT.format(count=self.quantity, name=self.card.name.name, set=self.card.set.set)
+
 
 class SynergyText(Base):
     '''
@@ -120,3 +153,27 @@ class SynergyText(Base):
     quantity = Column(Integer)
     synergy_id = Column(Integer, ForeignKey('synergies.id'))
     text = Column(Text)
+
+    @classmethod
+    def from_string(cls, string):
+        '''Does not set up index or synergy_id'''
+        string = string.strip()
+        match = SYNERGY_TEXT_REGEX.search(string)
+        if not match:
+            raise InvalidDataException("Incorrect text format")
+
+        count = match.group('count')
+        if count:
+            count = count.strip()
+        count = int(count) if count else 1
+
+        text = match.group('text')
+        if text:
+            text = text.strip()
+        else:
+            raise InvalidDataException("Incorrect text format")
+
+        return cls(quantity=count, text=text)
+
+    def __str__(self):
+        return SYNERGY_TEXT_FMT.format(count=self.quantity, text=self.text)

@@ -32,7 +32,7 @@ def ci_contains(string):
     return None
 
 
-def get_exact(string):
+def get_exact_name(string):
     try_resolve = ci_contains(string)
     if try_resolve is None:
         return None
