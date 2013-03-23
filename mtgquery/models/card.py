@@ -11,8 +11,7 @@ from sqlalchemy import (
 )
 
 from sqlalchemy.orm import relationship
-from mtgquery.lib.parsers.sets import resolve_set
-from mtgquery.lib.parsers.card_name import get_exact_name
+from mtgquery.lib.parsers import get_special_card_name, resolve_set
 
 
 class Card(Base):
@@ -43,18 +42,18 @@ class Card(Base):
 
         if the specified set can't be found, will fall back to the most recent printing of the named card
         '''
-        if name is None:
-            raise InvalidDataException()
-        special_name = get_exact_name(name)
-        if special_name is not None:
-            name = special_name
+        if not name:
+            raise InvalidDataException("Card name cannot be blank")
+        name = get_special_card_name(name)
 
         card_name = DBSession.query(CardName).filter(CardName.name.ilike(name)).first()
         if card_name is None:
-            raise InvalidDataException()
+            raise InvalidDataException("Unknown card {}".format(name))
 
         possible_sets = [c.set.set for c in card_name.cards]
         best_set = resolve_set(set, possible_sets, card_name.name)
+        if best_set is None:
+            raise InvalidDataException("Unknown set {}".format(set))
 
         card_set = DBSession.query(CardSet).filter(CardSet.set.ilike(best_set)).first()
         card = DBSession.query(Card).filter_by(name=card_name, set=card_set).first()

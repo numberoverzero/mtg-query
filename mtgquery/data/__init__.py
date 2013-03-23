@@ -15,3 +15,10 @@ def load(filename):
     with open(filepath) as f:
         data = f.read()
     return unicode(data, encoding='utf-8')
+
+
+def load_lines(filename, skip_blank=False):
+    lines = load(filename).split(u'\n')
+    if skip_blank:
+        lines = filter(bool, lines)
+    return lines
