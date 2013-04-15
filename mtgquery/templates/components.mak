@@ -1,7 +1,4 @@
 <%! 
-  import mtgquery.templates.util.util as util
-  import mtgquery.templates.util.common_js as common_js
-
   def active(condition):
     return 'active' if condition else ''
 %>

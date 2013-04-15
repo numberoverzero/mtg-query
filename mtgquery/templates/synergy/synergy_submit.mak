@@ -1,4 +1,3 @@
-<%! import mtgquery.templates.util.common_js as common_js %>
 <%namespace name="base" file="../base.mak"/>
 <%inherit file="../base.mak"/>
 <form id="synergy-form" class="well form-center" action="#" method="POST">
@@ -33,4 +32,6 @@
   </fieldset>
 </form>
 <%block name="js">${base.js_script("/js/jquery.autosize-min.js")}${parent.js()}</%block>
-<%block name="js_onready">${common_js.autosize('textarea') |n}</%block>
+<%block name="js_onready">
+$('textarea').autosize();
+</%block>

@@ -1,5 +1,5 @@
-<%! import mtgquery.templates.util.common_js as common_js %>
-<%! import mtgquery.templates.util as util %>
+<%! import mtgquery.templates.notificationjs %>
+<%! from mtgquery.lib.markdown_extensions import markdown_with_icons %>
 <%namespace name="components" file="../components.mak"/>
 <%namespace name="base" file="../base.mak"/>
 <%inherit file="../base.mak"/>
@@ -38,7 +38,7 @@
 % if len(description) > 0:
 <hr/>
 <div class="user-description">
-  ${util.mtg_description_escape(description) |n}
+  ${markdown_with_icons(description) |n}
 </div>
 % endif
 %if len(urls) > 0:
@@ -68,7 +68,16 @@ ${base.js_script("/js/jquery.notifier.js")}
 
 <%block name="js_onready">
 % if len(notifications) > 0:
-${common_js.notifier_init("notify", "notification-area", 3, notifications=(n.msg for n in notifications)) |n }
+${notificationjs.notifier_init("notify", "notification-area", 3, notifications=(n.msg for n in notifications)) |n }
 % endif
-${util.common_js.card_tooltips() |n}
+var tt = $("a.card-tooltip[rel=tooltip]");
+    tt.tooltip({
+    html: true,
+    trigger: 'click',
+    placement: 'right',
+    animation: false,
+    template: '<div class="tooltip"><div class="tooltip-inner"></div></div>'}).click(function(e) { e.preventDefault();
+});
+tt.tooltip('show');
+tt.tooltip('hide');
 </%block>
