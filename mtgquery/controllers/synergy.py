@@ -1,5 +1,6 @@
 from datetime import datetime
 from ..lib.alchemy_extensions import get_last_n
+from sqlalchemy.orm import joinedload_all
 from ..models import (
     DBSession,
     InvalidDataException,
@@ -100,7 +101,10 @@ def create_synergy(cards, title, description):
 
 
 def load_synergy(hash):
-    synergy = DBSession.query(Synergy).filter_by(hash=hash).first()
+    synergy = DBSession.query(Synergy).options(
+        joinedload_all(Synergy.cards),
+        joinedload_all(Synergy.texts)
+    ).filter_by(hash=hash).first()
     if synergy is None:
         raise SynergyHashNotFoundException(hash)
 
