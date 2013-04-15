@@ -10,6 +10,26 @@ from ..models.synergy import (
     SynergyText
 )
 
+newest_synergies_len = 10
+newest_synergies = []
+
+MAX_ENTRIES = 40
+MAX_DESCRIPTION_LINES = 40
+MAX_DESCRIPTION_LINE_LENGTH = 500
+
+
+def cache_new_synergy(synergy):
+    global newest_synergies
+    title = synergy.title if len(synergy.title) > 0 else u"(Untitled)"
+    synergy_data = {
+        'title': title,
+        'length': len(synergy.cards) + len(synergy.texts),
+        'url': u'/s/{}'.format(synergy.hash)
+    }
+    newest_synergies.append(synergy_data)
+    if len(newest_synergies) > newest_synergies_len:
+        newest_synergies = newest_synergies[-newest_synergies_len:]
+
 
 class SynergyHashNotFoundException(Exception):
     def __init__(self, hash):
@@ -20,19 +40,15 @@ class SynergyHashNotFoundException(Exception):
         return u"Could not find the hash \"{}\"".format(self.hash)
 
 
-MAX_ENTRIES = 40
-MAX_DESCRIPTION_LINES = 40
-MAX_DESCRIPTION_LINE_LENGTH = 500
-
-
 def nb_lines(string):
     string = string.replace(u"\r\n", u"\n")
     lines = string.split(u"\n")
+    nonblank = lambda line: len(line.strip()) > 0
     return filter(nonblank, lines)
 
 
-def nonblank(line):
-    return len(line.strip()) > 0
+def preheat_cache():
+    get_newest_synergyies()
 
 
 def create_synergy(cards, title, description):
@@ -85,6 +101,7 @@ def create_synergy(cards, title, description):
             except InvalidDataException as e:
                 synergy.visible = False
                 print e
+    cache_new_synergy(synergy)
     return synergy.hash
 
 
@@ -135,14 +152,8 @@ def get_random_hash():
 
 
 def get_newest_synergyies():
-    n = 10
-    data = []
-    synergies = get_last_n(DBSession, Synergy, n, u'id', [u'cards', u'texts'])
-    for synergy in synergies:
-        title = synergy.title if len(synergy.title) > 0 else u"(Untitled)"
-        data.append({
-            'title': title,
-            'length': len(synergy.cards) + len(synergy.texts),
-            'url': u'/s/{}'.format(synergy.hash)
-        })
-    return data
+    if not newest_synergies:
+        # Haven't loaded newest from DB yet
+        synergies = get_last_n(DBSession, Synergy, newest_synergies_len, u'id', [u'cards', u'texts'])
+        map(cache_new_synergy, synergies)
+    return list(newest_synergies)
