@@ -14,8 +14,7 @@ newest_synergies_len = 10
 newest_synergies = []
 
 MAX_ENTRIES = 40
-MAX_DESCRIPTION_LINES = 40
-MAX_DESCRIPTION_LINE_LENGTH = 500
+MAX_DESCRIPTION_LENGTH = 10000  # Limit is number of characters pre-formatting
 
 
 def cache_new_synergy(synergy):
@@ -58,33 +57,22 @@ def create_synergy(cards, title, description):
     synergy.random_generate_unique()
     DBSession.add(synergy)
 
-    description = description.replace(u"\r\n", u"\n")
-    description_lines = description.split(u"\n")
-
-    if len(description_lines) > MAX_DESCRIPTION_LINES:
+    if not title:
         synergy.visible = False
-        description_lines = description_lines[:MAX_ENTRIES]
+
+    description = description.replace(u"\r\n", u"\n")
+    if len(description) > MAX_DESCRIPTION_LENGTH:
+        description = description[:MAX_DESCRIPTION_LENGTH]
         #ADD A MESSAGE ABOUT TRUNCATED CONTENT
         #"Description truncated: maximum of {} lines"
 
-    notified = False
-    for i, line in enumerate(description_lines):
-        if len(line) > MAX_DESCRIPTION_LINE_LENGTH:
-            synergy.visible = False
-            description_lines[i] = line[:MAX_DESCRIPTION_LINE_LENGTH]
-            if not notified:
-                notified = True
-                #ADD A MESSAGE ABOUT TRUNCATED CONTENT
-                #"Entry truncated: maximum of {} cards/text"
-
-    description = u'\n'.join(description_lines)
     synergy.description = description
 
     entry_lines = nb_lines(cards)
     if len(entry_lines) > MAX_ENTRIES:
-        synergy.visible = False
         entry_lines = entry_lines[:MAX_ENTRIES]
         #ADD A MESSAGE ABOUT TRUNCATED CONTENT
+        #"Cards truncated: maximum of {} cards"
 
     for index, line in enumerate(entry_lines):
         try:
@@ -92,16 +80,22 @@ def create_synergy(cards, title, description):
             synergy_text.synergy = synergy
             synergy_text.index = index
             DBSession.add(synergy_text)
-        except InvalidDataException as e:
+        except InvalidDataException:  # as e:
+            # If it isn't a synergy text, it's either a card or invalid
             try:
                 synergy_card = SynergyCard.from_string(line)
                 synergy_card.synergy = synergy
                 synergy_card.index = index
                 DBSession.add(synergy_card)
-            except InvalidDataException as e:
-                synergy.visible = False
-                print e
-    cache_new_synergy(synergy)
+            except InvalidDataException:  # as e:
+                #ADD A MESSAGE ABOUT INVALID CARD
+                #"Card {} was invalid because {}"
+                pass
+    if len(synergy.cards) == len(synergy.texts) == 0:
+        synergy.visible = False
+
+    if synergy.visible:
+        cache_new_synergy(synergy)
     return synergy.hash
 
 
