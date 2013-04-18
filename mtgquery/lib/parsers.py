@@ -7,6 +7,10 @@ card_name_replacements = [
     (u'\u00E9', u'e'),
 ]
 special_card_names = data.load_lines('cards.special_names', skip_blank=True)
+print "SPECIAL CARD NAMES"
+for line in special_card_names:
+    print line
+print "END SPECIAL CARD NAMES"
 for exact in special_card_names:
     for replacement in card_name_replacements:
         valid = exact.replace(*replacement)
