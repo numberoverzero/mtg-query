@@ -51,7 +51,9 @@ def create(request):
     cards = request.POST['synergy-cards']
     description = request.POST['synergy-description']
     title = request.POST['synergy-title']
-    hash = mtgquery.controllers.synergy.create_synergy(cards, title, description)
+    hash, notifications = mtgquery.controllers.synergy.create_synergy(cards, title, description)
+    for notification in notifications:
+        request.session.flash(unicode(notification))
     url = request.route_url('synergy_view', hash_id=hash)
     return HTTPFound(location=url)
 
@@ -60,8 +62,9 @@ def load(request, is_raw):
     hash = request.matchdict['hash_id']
     urls, counts, title, description, form_dict = mtgquery.controllers.synergy.load_synergy(hash)
     alt_view = '/s/{}' if is_raw else '/s/{}/basic'  # Opposite view of the one we're loading
+    notifications = request.session.pop_flash()
     return merge_dicts(form_dict, {'urls': urls, 'counts': counts,
                                    'title': title, 'description': description,
                                    'link_alt_href': alt_view.format(hash),
-                                   'notifications': [],
+                                   'notifications': notifications,
                                    'copy_from_href': '/submit/from/{}'.format(hash)})

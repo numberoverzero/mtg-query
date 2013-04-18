@@ -67,23 +67,23 @@ def create_synergy(cards, title, description):
     synergy = Synergy(create_date=datetime.now(), title=title, view_count=0, visible=True)
     synergy.random_generate_unique()
     DBSession.add(synergy)
+    notifications = []
 
     if not title:
+        notifications.append(u"Synergy not indexed: Must provide a title")
         synergy.visible = False
 
     description = description.replace(u"\r\n", u"\n")
     if len(description) > MAX_DESCRIPTION_LENGTH:
         description = description[:MAX_DESCRIPTION_LENGTH]
-        #ADD A MESSAGE ABOUT TRUNCATED CONTENT
-        #"Description truncated: maximum of {} lines"
+        notifications.append(u"Description truncated: Exceeded {} characters".format(MAX_DESCRIPTION_LENGTH))
 
     synergy.description = description
 
     entry_lines = nb_lines(cards)
     if len(entry_lines) > MAX_ENTRIES:
         entry_lines = entry_lines[:MAX_ENTRIES]
-        #ADD A MESSAGE ABOUT TRUNCATED CONTENT
-        #"Cards truncated: maximum of {} cards"
+        notifications.append(u"Cards truncated: Exceeded {} cards".format(MAX_ENTRIES))
 
     for index, line in enumerate(entry_lines):
         try:
@@ -91,23 +91,22 @@ def create_synergy(cards, title, description):
             synergy_text.synergy = synergy
             synergy_text.index = index
             DBSession.add(synergy_text)
-        except InvalidDataException:  # as e:
+        except InvalidDataException:
             # If it isn't a synergy text, it's either a card or invalid
             try:
                 synergy_card = SynergyCard.from_string(line)
                 synergy_card.synergy = synergy
                 synergy_card.index = index
                 DBSession.add(synergy_card)
-            except InvalidDataException:  # as e:
-                #ADD A MESSAGE ABOUT INVALID CARD
-                #"Card {} was invalid because {}"
-                pass
+            except InvalidDataException as e:  # as e:
+                notifications.append(u"Invalid line \"{}\": {}".format(line, e.msg))
     if len(synergy.cards) == len(synergy.texts) == 0:
+        notifications.append(u"Synergy not indexed: Must have at least one card (or custom text card)")
         synergy.visible = False
 
     if synergy.visible:
         cache_new_synergy(synergy)
-    return synergy.hash
+    return synergy.hash, notifications
 
 
 def load_synergy(hash):

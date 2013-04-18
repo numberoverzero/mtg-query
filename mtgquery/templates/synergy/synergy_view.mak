@@ -68,7 +68,7 @@ ${base.js_script("/js/jquery.notifier.js")}
 
 <%block name="js_onready">
 % if len(notifications) > 0:
-${notifier_init("notify", "notification-area", 3, notifications=(n.msg for n in notifications)) |n }
+${notifier_init("notify", "notification-area", 3, notifications=notifications) |n }
 % endif
 var tt = $("a.card-tooltip[rel=tooltip]");
     tt.tooltip({
