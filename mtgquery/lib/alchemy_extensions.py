@@ -47,14 +47,22 @@ def get_random(session, model, field='id'):
             return obj
 
 
-def get_last_n(session, model, n, field='id', subquery_fields=None):
+def get_last_n(session, model, n, field, subquery_fields, **kwargs):
     '''
-    Returns the last n objects in the table,
-    by id.  If there are less than n objects,
-    returns as many as possible
+    Returns the last n objects in the table, by field, filtering on kwargs, with optional subquery fields.
+
+    number returned is min(n, len(matching objects in database))
+
+    session: database session
+    model: model type to return a list of
+    n: maximum to return
+    field: the model field to order by
+    subquery_fields: optional subquery loading.  Pass None to skip.
+    **kwargs: filter_by(kwargs) to filter which objects are to be ordered descending by field.
     '''
+
     field = getattr(model, field).desc()
-    query = session.query(model).order_by(field)
+    query = session.query(model).filter_by(**kwargs).order_by(field)
     if subquery_fields:
         for sq_field in subquery_fields:
             field = getattr(model, sq_field)

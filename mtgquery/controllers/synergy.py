@@ -18,6 +18,20 @@ MAX_ENTRIES = 40
 MAX_DESCRIPTION_LENGTH = 10000  # Limit is number of characters pre-formatting
 
 
+def preheat_cache():
+    print "preheating newest synergies"
+    get_newest_synergyies()
+
+
+def get_newest_synergyies():
+    if len(newest_synergies) < newest_synergies_len:
+        # Load some more from the DB
+        n = newest_synergies_len - len(newest_synergies)
+        additional_synergies = get_last_n(DBSession, Synergy, n, u'id', [u'cards', u'texts'], visible=True)
+        map(cache_new_synergy, additional_synergies)
+    return list(newest_synergies)
+
+
 def cache_new_synergy(synergy):
     global newest_synergies
     title = synergy.title if len(synergy.title) > 0 else u"(Untitled)"
@@ -45,10 +59,6 @@ def nb_lines(string):
     lines = string.split(u"\n")
     nonblank = lambda line: len(line.strip()) > 0
     return filter(nonblank, lines)
-
-
-def preheat_cache():
-    get_newest_synergyies()
 
 
 def create_synergy(cards, title, description):
@@ -147,11 +157,3 @@ def load_synergy(hash):
 
 def get_random_hash():
     return Synergy.get_random_hash()
-
-
-def get_newest_synergyies():
-    if not newest_synergies:
-        # Haven't loaded newest from DB yet
-        synergies = get_last_n(DBSession, Synergy, newest_synergies_len, u'id', [u'cards', u'texts'])
-        map(cache_new_synergy, synergies)
-    return list(newest_synergies)
