@@ -14,7 +14,12 @@ def load(filename):
     filepath = abs_path(filename)
     with open(filepath) as f:
         data = f.read()
-    return unicode(data, encoding='utf-8')
+    try:
+        data = unicode(data, encoding='utf-8')
+    except UnicodeEncodeError:
+        # Already unicode
+        pass
+    return data
 
 
 def load_lines(filename, skip_blank=False):
