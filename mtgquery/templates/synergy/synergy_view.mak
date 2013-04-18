@@ -1,4 +1,4 @@
-<%! import mtgquery.templates.notificationjs %>
+<%! from mtgquery.templates import notifier_init %>
 <%! from mtgquery.lib.markdown_extensions import markdown_with_icons %>
 <%namespace name="components" file="../components.mak"/>
 <%namespace name="base" file="../base.mak"/>
@@ -68,7 +68,7 @@ ${base.js_script("/js/jquery.notifier.js")}
 
 <%block name="js_onready">
 % if len(notifications) > 0:
-${notificationjs.notifier_init("notify", "notification-area", 3, notifications=(n.msg for n in notifications)) |n }
+${notifier_init("notify", "notification-area", 3, notifications=(n.msg for n in notifications)) |n }
 % endif
 var tt = $("a.card-tooltip[rel=tooltip]");
     tt.tooltip({
