@@ -2,8 +2,7 @@ from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPMovedPermanently
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from sqlalchemy import engine_from_config
-import controllers.help
-import controllers.synergy
+import controllers
 import os
 
 from .models import (
@@ -25,8 +24,7 @@ def main(global_config, **settings):
 
     # Preheat any cached data
     if settings['preheat_cache'] == 'true':
-        controllers.help.preheat_cache()
-        controllers.synergy.preheat_cache()
+        controllers.preheat_cache()
 
     session_factory = UnencryptedCookieSessionFactoryConfig('alertsigner')
     config = Configurator(settings=settings, session_factory=session_factory)
