@@ -14,4 +14,7 @@ class InvalidDataException(Exception):
         self.msg = msg
 
     def __str__(self):
-        return self.msg
+        return repr(self)
+
+    def __repr__(self):
+        return u'InvalidDataException({})'.format(self.msg)

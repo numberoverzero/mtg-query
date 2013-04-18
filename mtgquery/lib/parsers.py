@@ -1,23 +1,20 @@
+# -*- coding: utf-8 -*-
+
 from mtgquery import data
 
 card_name_spellings = {}
 card_name_replacements = [
-    (u'\u00E6', u'ae'),
-    (u'\u00C6', u'ae'),
-    (u'\u00E9', u'e'),
+    (u'Æ', u'ae'),
+    (u'æ', u'ae'),
+    (u'é', u'e'),
 ]
 special_card_names = data.load_lines('cards.special_names', skip_blank=True)
-print "SPECIAL CARD NAMES"
-for line in special_card_names:
-    print line
-print "END SPECIAL CARD NAMES"
 for exact in special_card_names:
     for replacement in card_name_replacements:
         valid = exact.replace(*replacement)
         if valid == exact:  # No replacement
             continue
-        card_name_spellings[valid.lower()] = exact
-
+        card_name_spellings[valid.lower().strip()] = exact
 sets = data.load_lines('cards.sets', skip_blank=True)
 ci_descending_set_names = [set.lower() for set in reversed(sets)]
 

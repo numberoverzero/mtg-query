@@ -43,17 +43,17 @@ class Card(Base):
         if the specified set can't be found, will fall back to the most recent printing of the named card
         '''
         if not name:
-            raise InvalidDataException("Card name cannot be blank")
+            raise InvalidDataException(u"Card name cannot be blank")
         name = get_special_card_name(name)
 
         card_name = DBSession.query(CardName).filter(CardName.name.ilike(name)).first()
         if card_name is None:
-            raise InvalidDataException("Unknown card {}".format(name))
+            raise InvalidDataException(u"Unknown card {}".format(name))
 
         possible_sets = [c.set.set for c in card_name.cards]
         best_set = resolve_set(set, possible_sets, card_name.name)
         if best_set is None:
-            raise InvalidDataException("Unknown set {}".format(set))
+            raise InvalidDataException(u"Unknown set {}".format(set))
 
         card_set = DBSession.query(CardSet).filter(CardSet.set.ilike(best_set)).first()
         card = DBSession.query(Card).filter_by(name=card_name, set=card_set).first()

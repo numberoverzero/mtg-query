@@ -19,6 +19,7 @@ def load(filename):
     except UnicodeEncodeError:
         # Already unicode
         pass
+    data = data.replace(u'\r\n', u'\n')
     return data
 
 
