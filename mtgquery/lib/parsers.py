@@ -15,6 +15,7 @@ for exact in special_card_names:
         if valid == exact:  # No replacement
             continue
         card_name_spellings[valid.lower().strip()] = exact
+
 sets = data.load_lines('cards.sets', skip_blank=True)
 ci_descending_set_names = [set.lower() for set in reversed(sets)]
 

@@ -3,7 +3,7 @@
   $.fn.notifier = function (max_notifications){
       var self = this;
       self.template = $(
-      '<div class="notification alert alert-block alert-error">' +
+      '<div class="notification alert alert-error">' +
         '<h4 class="alert-heading" />' +
       '</div>');
       
