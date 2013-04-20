@@ -4,19 +4,46 @@ from mtgquery.models.card import Card, CardName, CardSet
 from mtgquery import data
 
 card_name_replacements = {}
+sets = data.load_lines('cards.sets', skip_blank=True)
+ci_descending_set_names = [set_.lower() for set_ in reversed(sets)]
+del set_
 
 
 def load_replacements():
     global card_name_replacements
 
+    #======================
+    #   UNICODE CHARACTERS
+    #======================
+
     # Load unicode card names, such as Æther Flash
-    unicode_replacements = [(u'Æ', u'ae'), (u'æ', u'ae'), (u'é', u'e')]
-    unicode_names = data.load_lines('cards.special_names', skip_blank=True)
-    for exact in unicode_names:
-        for replacement in unicode_replacements:
-            valid = exact.replace(*replacement)
-            if valid != exact:
-                card_name_replacements[valid.lower().strip()] = exact
+    utranslation_table = {
+        u'Æ': u'ae',
+        u'æ': u'ae',
+        u'â': u'a',
+        u'á': u'a',
+        u'à': u'a',
+        u'é': u'e',
+        u'í': u'i',
+        u'ö': u'o',
+        u'û': u'u',
+        u'ú': u'u'
+    }
+    unicode_names = set()
+    # First pass - identify all cards with unicode characters
+    for uchar in utranslation_table:
+        match = u'%{}%'.format(uchar)
+        unicode_names |= set(card_name.name for card_name in DBSession.query(CardName).filter(CardName.name.like(match)).all())
+
+    # Second pass - for each unicode card name, apply all replacements at once
+    utranslation_table = {ord(k): v for k, v in utranslation_table.iteritems()}
+    for unicode_name in unicode_names:
+        replacement_name = unicode_name.translate(utranslation_table).lower()
+        card_name_replacements[replacement_name] = unicode_name
+
+    #======================
+    #   SPLIT CARDS
+    #======================
 
     # Load split cards, such as Dead // Gone
     split_names = DBSession.query(CardName).filter(CardName.name.ilike('%//%')).all()
@@ -24,10 +51,6 @@ def load_replacements():
     for split_name in split_names:
         for half in split_name.split(u'//'):
             card_name_replacements[half.strip().lower()] = split_name
-
-
-sets = data.load_lines('cards.sets', skip_blank=True)
-ci_descending_set_names = [set.lower() for set in reversed(sets)]
 
 
 def card_from(name, set):

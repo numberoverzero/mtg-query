@@ -24,10 +24,11 @@ def main(global_config, **settings):
     DBSession.configure(bind=engine)
     Base.metadata.bind = engine
 
+    mtgquery.lib.parsers.load_replacements()
+
     # Preheat any cached data
     if settings['preheat_cache'] == 'true':
         controllers.preheat_cache()
-    mtgquery.lib.parsers.load_replacements()
 
 
     session_factory = UnencryptedCookieSessionFactoryConfig('alertsigner')
