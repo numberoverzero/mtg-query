@@ -18,6 +18,14 @@ def load_replacements():
             if valid != exact:
                 card_name_replacements[valid.lower().strip()] = exact
 
+    # Load split cards, such as Dead // Gone
+    split_names = DBSession.query(CardName).filter(CardName.name.ilike('%//%')).all()
+    split_names = [card_name.name for card_name in split_names]
+    for split_name in split_names:
+        for half in split_name.split(u'//'):
+            card_name_replacements[half.strip().lower()] = split_name
+
+
 sets = data.load_lines('cards.sets', skip_blank=True)
 ci_descending_set_names = [set.lower() for set in reversed(sets)]
 
