@@ -4,7 +4,7 @@ from datetime import datetime
 from mtgquery.lib.alchemy_extensions import has_model as _has_model
 from mtgquery.util import get_logger
 from mtgquery.models import DBSession
-from ..models.card import Card
+from mtgquery.lib import parsers
 from ..models.synergy import (
     Synergy,
     SynergyCard,
@@ -120,7 +120,7 @@ def load_synergy(session, hash, title, description, *cards):
             if set:
                 set = set.strip()
 
-            card = Card.interpolate_name_and_set(card, set)
+            card = parsers.card_from(card, set)
 
             synergy_card = SynergyCard(synergy=synergy, card=card, index=i, quantity=count)
             session.add(synergy_card)

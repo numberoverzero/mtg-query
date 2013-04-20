@@ -1,14 +1,16 @@
+import os
 from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPMovedPermanently
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from sqlalchemy import engine_from_config
-import controllers
-import os
 
 from .models import (
     Base,
     DBSession,
 )
+
+import controllers
+import mtgquery.lib.parsers
 
 
 def main(global_config, **settings):
@@ -25,6 +27,8 @@ def main(global_config, **settings):
     # Preheat any cached data
     if settings['preheat_cache'] == 'true':
         controllers.preheat_cache()
+    mtgquery.lib.parsers.load_replacements()
+
 
     session_factory = UnencryptedCookieSessionFactoryConfig('alertsigner')
     config = Configurator(settings=settings, session_factory=session_factory)

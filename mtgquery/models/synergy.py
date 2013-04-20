@@ -5,7 +5,6 @@ from ..models import (
     DBSession,
     InvalidDataException
 )
-from ..models.card import Card
 from sqlalchemy import (
     Boolean,
     Column,
@@ -20,6 +19,7 @@ from sqlalchemy.orm import relationship
 from ..lib import base58
 from ..lib.alchemy_extensions import has_model, get_random
 from ..util import get_logger
+from mtgquery.lib import parsers
 import random
 
 log = get_logger(__name__)
@@ -132,7 +132,7 @@ class SynergyCard(Base):
         if set:
             set = set.strip()
 
-        card = Card.interpolate_name_and_set(name, set)
+        card = parsers.card_from(name, set)
         return cls(card=card, quantity=count)
 
     def __str__(self):

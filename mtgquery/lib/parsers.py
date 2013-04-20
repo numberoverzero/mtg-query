@@ -1,30 +1,52 @@
 # -*- coding: utf-8 -*-
-
+from mtgquery.models import DBSession, InvalidDataException
+from mtgquery.models.card import Card, CardName, CardSet
 from mtgquery import data
 
-card_name_spellings = {}
-card_name_replacements = [
-    (u'Æ', u'ae'),
-    (u'æ', u'ae'),
-    (u'é', u'e'),
-]
-special_card_names = data.load_lines('cards.special_names', skip_blank=True)
-for exact in special_card_names:
-    for replacement in card_name_replacements:
-        valid = exact.replace(*replacement)
-        if valid == exact:  # No replacement
-            continue
-        card_name_spellings[valid.lower().strip()] = exact
+card_name_replacements = {}
+
+
+def load_replacements():
+    global card_name_replacements
+
+    # Load unicode card names, such as Æther Flash
+    unicode_replacements = [(u'Æ', u'ae'), (u'æ', u'ae'), (u'é', u'e')]
+    unicode_names = data.load_lines('cards.special_names', skip_blank=True)
+    for exact in unicode_names:
+        for replacement in unicode_replacements:
+            valid = exact.replace(*replacement)
+            if valid != exact:
+                card_name_replacements[valid.lower().strip()] = exact
 
 sets = data.load_lines('cards.sets', skip_blank=True)
 ci_descending_set_names = [set.lower() for set in reversed(sets)]
 
 
-def get_special_card_name(string):
-    return card_name_spellings.get(string.lower(), string)
+def card_from(name, set):
+        '''
+        name and set are both strings.  set can be None.
+
+        if the specified set can't be found, will fall back to the most recent printing of the named card
+        '''
+        if not name:
+            raise InvalidDataException(u"Card name cannot be blank")
+        name = card_name_replacements.get(name.lower(), name)
+
+        card_name = DBSession.query(CardName).filter(CardName.name.ilike(name)).first()
+        if card_name is None:
+            raise InvalidDataException(u"Unknown card {}".format(name))
+
+        possible_sets = [c.set.set for c in card_name.cards]
+        best_set = resolve_set(set, possible_sets, card_name.name)
+        if best_set is None:
+            raise InvalidDataException(u"Unknown set {}".format(set))
+
+        card_set = DBSession.query(CardSet).filter(CardSet.set.ilike(best_set)).first()
+        card = DBSession.query(Card).filter_by(name=card_name, set=card_set).first()
+        return card
 
 
-def _set_cmp(set_name_1, set_name_2):
+def __set_cmp__(set_name_1, set_name_2):
     '''
     set1 < set2 :: -1
     set1 == set2 :: 0
@@ -63,7 +85,7 @@ def resolve_set(set, sets, card_name):
     if set in sets:
         return set
 
-    sorted_sets = sorted(sets, cmp=_set_cmp)
+    sorted_sets = sorted(sets, cmp=__set_cmp__)
 
     #Default to first set for None
     if set is None:

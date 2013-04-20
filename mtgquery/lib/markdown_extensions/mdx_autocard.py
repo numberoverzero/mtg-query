@@ -1,6 +1,6 @@
 import markdown
 from markdown.inlinepatterns import Pattern
-from ...models.card import Card
+from mtgquery.lib import parsers
 
 CARD_RE = r'(\[\[)([^:^"]+?)(:([^"]+?))?("(.+?)")?(\]\])'
 BASE_CARD_URL = 'http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={}&type=card'
@@ -17,7 +17,7 @@ class AutoCardPattern(Pattern):
             set = set.strip()
         link_text = m.group(7)
 
-        card = Card.interpolate_name_and_set(name, set)
+        card = parsers.card_from(name, set)
 
         if card is None:  # Not a valid card, return the raw input
             return u''.join(m.groups('')[1:])
