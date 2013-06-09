@@ -9,6 +9,18 @@ ci_descending_set_names = [set_.lower() for set_ in reversed(sets)]
 del set_
 
 
+def uniq_list(seq):
+    # order preserving
+    seen = {}
+    result = []
+    for item in seq:
+        if item in seen:
+            continue
+        seen[item] = 1
+        result.append(item)
+    return result
+
+
 def load_replacements():
     global card_name_replacements
 
@@ -94,7 +106,7 @@ def __set_cmp__(set_name_1, set_name_2):
 
     if in1 and in2:
         return cmp(ci_descending_set_names.index(set_name_1),
-                   ci_descending_set_names.index(set_name_2))
+                    ci_descending_set_names.index(set_name_2))
     elif in1 and not in2:
         return 1
     elif in2 and not in1:
@@ -116,7 +128,7 @@ def resolve_set(set, sets, card_name):
     if set in sets:
         return set
 
-    sorted_sets = sorted(sets, cmp=__set_cmp__)
+    sorted_sets = sorted(uniq_list(sets), cmp=__set_cmp__)
 
     #Default to first set for None
     if set is None:

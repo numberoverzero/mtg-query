@@ -90,5 +90,4 @@ if __name__ == "__main__":
         sys.exit(1)
     db_path = argv[1]
     load_cards_from(db_path)
-    gen_help_links.main()
     transaction.commit()
