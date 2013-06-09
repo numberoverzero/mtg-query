@@ -1,3 +1,4 @@
+import os
 import sys
 import transaction
 
@@ -9,8 +10,11 @@ import transaction
 #
 #
 ##########################
-
-from mtgquery.models import DBSession
+from sqlalchemy import engine_from_config
+from mtgquery.models import (
+    Base,
+    DBSession
+)
 from mtgquery.models.card import (
     Card,
     CardArtist,
@@ -30,6 +34,10 @@ from mtgquery.lib.alchemy_extensions import get_or_create
 from mtgquery.scripts import gen_help_links
 import sqlsoup
 
+sqlalchemy_url = os.environ.get('DATABASE_URL')
+engine = engine_from_config({'sqlalchemy.url': sqlalchemy_url}, 'sqlalchemy.')
+DBSession.configure(bind=engine)
+Base.metadata.bind = engine
 
 dstSession = DBSession()
 load_model = lambda model, **kwargs: get_or_create(dstSession, model, **kwargs)
