@@ -90,7 +90,7 @@ def load_synergy(session, hash, title, description, *cards):
     if has_model(Synergy, hash=hash):
         log.info("Skipping help file synergy creation for hash {}: hash already defined.".format(hash))
         return
-    synergy = Synergy(hash=hash, create_date=datetime.now(), title=title, description=description, view_count=0, is_public=True)
+    synergy = Synergy(hash=hash, create_date=datetime.now(), title=title, description=description, view_count=0, visible=True)
     for i, card in enumerate(cards):
         text_match = text_regex.search(card)
         card_match = card_regex.search(card)
